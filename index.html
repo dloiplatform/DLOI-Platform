@@ -2,711 +2,918 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>DLOI — Digital Letter of Intent</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DLOI — Digital Letter of Intent | Blockchain-Native CRE on XRPL</title>
+<meta name="description" content="The world's first blockchain-native commercial real estate transaction platform. On-chain LOI, RLUSD auto-escrow, Title NFT, RWA tokenization. Built on XRPL.">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{--void:#020609;--deep:#050d14;--dark:#091520;--rim:#1a3048;--edge:#243d54;--gold:#c9a96e;--jade:#3aab72;--rlusd:#00b4d8;--ember:#d45840;--violet:#7a62d4;--teal:#3ab8c8;--fog:#4a6880;--haze:#6a8898;--text:#d4e8f0;--ff:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;--fd:Georgia,'Times New Roman',serif;--fm:'Courier New',Courier,monospace}
-html,body{height:100%;background:var(--void);color:var(--text);font-family:var(--ff);overflow:hidden}
-::-webkit-scrollbar{width:2px;height:2px}::-webkit-scrollbar-thumb{background:var(--rim)}
-#app{display:flex;flex-direction:column;height:100vh;height:100dvh}
-#topbar{position:fixed;top:0;left:0;right:0;height:54px;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:rgba(2,6,9,.97);border-bottom:1px solid var(--rim)}
-.logo{font-family:var(--fd);font-size:20px;letter-spacing:3px;cursor:pointer;display:flex;align-items:center;gap:7px}
-.logo em{color:var(--gold);font-style:italic}
-.logo-tag{font-size:7px;font-weight:700;letter-spacing:2px;color:var(--rlusd);font-family:var(--fm)}
-#sbar{position:fixed;top:54px;left:0;right:0;height:38px;z-index:190;display:flex;overflow-x:auto;background:rgba(5,13,20,.98);border-bottom:1px solid var(--rim)}
-#sbar::-webkit-scrollbar{display:none}
-.sb{padding:3px 12px;border-right:1px solid var(--rim);flex-shrink:0;display:flex;flex-direction:column;justify-content:center}
-.sbl{font-size:6px;letter-spacing:2px;text-transform:uppercase;color:var(--fog);font-weight:600}
-.sbv{font-family:var(--fm);font-size:11px;font-weight:600;color:var(--rlusd)}
-.sbc{font-size:7px;color:var(--jade)}
-#body{display:flex;flex:1;margin-top:92px;margin-bottom:60px;overflow:hidden}
-#sidebar{width:176px;flex-shrink:0;background:var(--deep);border-right:1px solid var(--rim);display:none;flex-direction:column;overflow-y:auto}
-#main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
-@media(min-width:769px){#botnav{display:none!important}#body{margin-bottom:0}#sidebar{display:flex!important}}
-#botnav{position:fixed;bottom:0;left:0;right:0;height:60px;z-index:200;display:flex;background:rgba(2,6,9,.97);border-top:1px solid var(--rim)}
-.bni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;border:none;background:transparent}
-.bni.on .bni-i,.bni.on .bni-l{color:var(--rlusd)}
-.bni-i{font-size:20px;color:var(--fog)}
-.bni-l{font-size:7px;font-weight:700;color:var(--fog);text-transform:uppercase}
-.asi{display:flex;align-items:center;gap:7px;padding:7px 11px;cursor:pointer;font-size:9px;font-weight:600;color:var(--fog);text-transform:uppercase;border-left:2px solid transparent}
-.asi:hover,.asi.on{color:var(--gold);border-left-color:var(--gold);background:rgba(201,169,110,.04)}
-.asl{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--haze);padding:8px 11px 3px;font-weight:600}
-#utabs{display:flex;overflow-x:auto;background:var(--deep);border-bottom:1px solid var(--rim)}
-#utabs::-webkit-scrollbar{display:none}
-.utab{padding:9px 13px;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--fog);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0}
-.utab.on{color:var(--rlusd);border-bottom-color:var(--rlusd)}
-.pg{padding:13px 14px;display:none}.pg.on{display:block}
-.card{background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:11px 12px}
-.ct{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-bottom:4px;font-weight:600}
-.cv{font-family:var(--fm);font-size:17px;font-weight:600}
-.cs{font-size:9px;color:var(--jade);margin-top:2px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.g3{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.g4{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(min-width:480px){.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}}
-.btn{padding:8px 14px;border-radius:3px;font-family:var(--ff);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
-.btn:active{transform:scale(.97)}
-.btn-gold{background:var(--gold);color:var(--void)}
-.btn-rlusd{background:var(--rlusd);color:var(--void)}
-.btn-jade{background:var(--jade);color:var(--void)}
-.btn-violet{background:var(--violet);color:#fff}
-.btn-ghost{background:transparent;border:1px solid var(--rim);color:var(--fog)}
-.btn-sm{padding:5px 9px;font-size:8px}
-.btn-lg{padding:10px 20px;font-size:10px}
-.tag{font-size:7px;padding:2px 5px;border-radius:2px;font-weight:700;display:inline-block}
-.tg{background:rgba(201,169,110,.1);color:var(--gold)}
-.tj{background:rgba(58,171,114,.1);color:var(--jade)}
-.trl{background:rgba(0,180,216,.1);color:var(--rlusd)}
-.sc-a{padding:2px 7px;border-radius:8px;font-size:7px;font-weight:800;background:rgba(58,171,114,.12);color:var(--jade);border:1px solid rgba(58,171,114,.25)}
-.sc-f{padding:2px 7px;border-radius:8px;font-size:7px;font-weight:800;background:rgba(0,180,216,.12);color:var(--rlusd);border:1px solid rgba(0,180,216,.25)}
-.sc-c{padding:2px 7px;border-radius:8px;font-size:7px;font-weight:800;background:rgba(74,104,128,.15);color:var(--haze);border:1px solid rgba(74,104,128,.25)}
-.tabs{display:flex;border-bottom:1px solid var(--rim);margin-bottom:12px;overflow-x:auto}
-.tabs::-webkit-scrollbar{display:none}
-.tab{padding:7px 12px;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--fog);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0}
-.tab.on{color:var(--gold);border-bottom-color:var(--gold)}
-.fi{background:var(--void);border:1px solid var(--edge);color:var(--text);padding:10px 11px;border-radius:3px;font-family:var(--ff);font-size:14px;outline:none;width:100%;-webkit-appearance:none}
-.fi:focus{border-color:var(--rlusd)}.fi::placeholder{color:var(--haze)}
-select.fi option{background:var(--dark)}
-textarea.fi{resize:vertical}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px}
-.fgg{display:flex;flex-direction:column;gap:3px}
-.fgg.full{grid-column:1/-1}
-.fl{font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fog);font-weight:600;margin-bottom:2px}
-.irow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(26,48,72,.4);font-size:11px}
-.irow:last-child{border-bottom:none}
-.ik{color:var(--fog)}.iv{font-family:var(--fm);font-size:10px;font-weight:600}
-.prog{height:4px;background:var(--rim);border-radius:2px;overflow:hidden;margin:5px 0}
-.prog-f{height:100%;background:linear-gradient(90deg,var(--rlusd),var(--jade));border-radius:2px}
-.cev{display:flex;align-items:center;gap:7px;background:var(--dark);border:1px solid var(--rim);border-radius:3px;padding:6px 9px;margin-bottom:4px}
-.et{font-family:var(--fm);font-size:7px;padding:2px 5px;border-radius:2px;font-weight:700;flex-shrink:0}
-.ev-d{background:rgba(201,169,110,.12);color:var(--gold)}
-.ev-p{background:rgba(58,171,114,.12);color:var(--jade)}
-.ev-rl{background:rgba(0,180,216,.15);color:var(--rlusd)}
-.ev-k{background:rgba(74,104,128,.15);color:var(--haze)}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;align-items:flex-end;justify-content:center;z-index:500}
-@media(min-width:769px){.overlay{align-items:center;padding:16px}}
-.modal{background:var(--dark);border:1px solid var(--edge);width:100%;max-height:92vh;overflow-y:auto;border-radius:16px 16px 0 0;padding:18px;position:relative}
-@media(min-width:769px){.modal{border-radius:6px;max-width:540px}}
-.mh{width:40px;height:4px;background:var(--rim);border-radius:2px;margin:0 auto 12px}
-.mx{position:absolute;top:11px;right:12px;cursor:pointer;color:var(--fog);font-size:16px;padding:4px}
-.mt{font-family:var(--fd);font-size:19px;margin-bottom:3px}.mt em{color:var(--gold);font-style:italic}
-.ms{color:var(--fog);font-size:11px;margin-bottom:12px}
-.spin{width:14px;height:14px;border:2px solid var(--rim);border-top-color:var(--rlusd);border-radius:50%;animation:sp .7s linear infinite;display:inline-block;vertical-align:middle}
-@keyframes sp{to{transform:rotate(360deg)}}
-.lbar{height:2px;background:var(--rim);border-radius:1px;overflow:hidden;width:100%}
-.lbar-in{height:100%;background:linear-gradient(90deg,var(--rlusd),var(--jade));animation:la 1.4s ease-in-out infinite}
-@keyframes la{0%{width:0;margin-left:0}50%{width:60%;margin-left:20%}100%{width:0;margin-left:100%}}
-#toasts{position:fixed;bottom:70px;right:10px;display:flex;flex-direction:column;gap:5px;z-index:9999}
-@media(min-width:769px){#toasts{bottom:14px;right:14px}}
-.toast{background:#0d1e2e;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:7px;min-width:200px;max-width:280px;box-shadow:0 8px 40px rgba(0,0,0,.6);animation:ti .25s ease}
-.toast.success{border:1px solid rgba(58,171,114,.3)}.toast.info{border:1px solid rgba(0,180,216,.3)}.toast.error{border:1px solid rgba(212,88,64,.3)}
-@keyframes ti{from{transform:translateX(14px);opacity:0}to{transform:translateX(0);opacity:1}}
-.ti-i{font-size:13px;flex-shrink:0}.ti-t{font-size:10px;font-weight:500;flex:1;line-height:1.4}.ti-x{color:var(--fog);cursor:pointer;font-size:11px}
-.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:10px;font-size:8px;font-weight:700}
-.pill-j{background:rgba(58,171,114,.08);border:1px solid rgba(58,171,114,.22);color:var(--jade)}
-.pill-rl{background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.22);color:var(--rlusd)}
-.ldot{width:5px;height:5px;border-radius:50%;animation:ldp 2s infinite;display:inline-block}
-.ldot-j{background:var(--jade)}.ldot-rl{background:var(--rlusd)}
-@keyframes ldp{0%,100%{opacity:1}50%{opacity:.2}}
-.sh{font-family:var(--fd);font-size:17px;margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid var(--rim)}
-.sh em{color:var(--gold);font-style:italic}
-.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px;gap:9px;flex-wrap:wrap}
-.pt{font-family:var(--fd);font-size:21px;line-height:1.1}.pt em{color:var(--gold);font-style:italic}
-.ps{font-size:10px;color:var(--fog);margin-top:2px}
-.pc{background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:12px;cursor:pointer;margin-bottom:7px}
-.pc:active{border-color:var(--rlusd)}
-.tog{width:38px;height:20px;border-radius:10px;cursor:pointer;position:relative;border:none;display:inline-block}
-.tok{width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px}
-.code-block{background:var(--void);border:1px solid var(--rim);border-radius:4px;padding:12px;font-family:var(--fm);font-size:10px;color:var(--jade);line-height:1.8;overflow-x:auto;white-space:pre}
-.map-wrap{border-radius:5px;overflow:hidden;border:1px solid var(--rim);position:relative;background:#0a1628;margin-bottom:12px}
-#ai-fab{position:fixed;bottom:72px;right:12px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--rlusd));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 20px rgba(122,98,212,.4);z-index:300}
-@media(min-width:769px){#ai-fab{bottom:14px;right:70px}}
-#ai-panel{position:fixed;bottom:0;left:0;right:0;height:75vh;background:var(--dark);border-top:2px solid var(--violet);z-index:400;display:none;flex-direction:column;border-radius:16px 16px 0 0}
-#ai-panel.open{display:flex}
-@media(min-width:769px){#ai-panel{left:auto;width:380px;height:100vh;border-radius:0;border-top:none;border-left:2px solid var(--violet)}}
-.ai-msg-u{background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.2);border-radius:12px 12px 2px 12px;padding:9px 12px;font-size:11px;line-height:1.6;max-width:82%;margin-left:auto;margin-bottom:8px}
-.ai-msg-a{background:rgba(122,98,212,.08);border:1px solid rgba(122,98,212,.2);border-radius:12px 12px 12px 2px;padding:9px 12px;font-size:11px;line-height:1.6;max-width:82%;margin-bottom:8px}
-.ai-chip{display:inline-block;padding:5px 10px;border-radius:12px;font-size:9px;font-weight:700;cursor:pointer;border:1px solid rgba(122,98,212,.3);background:rgba(122,98,212,.06);color:var(--violet);margin:3px}
-.mt8{margin-top:8px}.mt12{margin-top:12px}.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}
-.tac{text-align:center}.w100{width:100%}
-.text-gold{color:var(--gold)}.text-jade{color:var(--jade)}.text-rl{color:var(--rlusd)}.text-fog{color:var(--fog)}
-.sm{font-size:10px}.xs{font-size:9px}.fm{font-family:var(--fm)}
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #060E18;
+    --deep:    #0B1E2D;
+    --card:    #0F2535;
+    --teal:    #00B4D8;
+    --teal2:   #0096B4;
+    --gold:    #C9A96E;
+    --green:   #3AAB72;
+    --fog:     #4A6880;
+    --mist:    #8AAFC4;
+    --snow:    #E8F4FA;
+    --white:   #FFFFFF;
+    --serif:   'DM Serif Display', Georgia, serif;
+    --sans:    'DM Sans', system-ui, sans-serif;
+    --mono:    'DM Mono', 'Courier New', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--snow);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(6,14,24,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,180,216,0.12);
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+
+  .nav-logo span { color: var(--teal); }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--mist);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--teal); }
+
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    padding: 10px 24px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--sans);
+    text-decoration: none;
+  }
+
+  .nav-cta:hover {
+    background: var(--teal);
+    color: var(--navy);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(0,180,216,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--teal);
+    opacity: 0.4;
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(42px, 7vw, 88px);
+    line-height: 1.05;
+    color: var(--white);
+    max-width: 900px;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .hero-sub {
+    font-family: var(--serif);
+    font-size: clamp(18px, 3vw, 28px);
+    color: var(--gold);
+    font-style: italic;
+    margin-bottom: 28px;
+  }
+
+  .hero-desc {
+    font-size: 16px;
+    color: var(--mist);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 72px;
+  }
+
+  .btn-primary {
+    background: var(--teal);
+    color: var(--navy);
+    padding: 16px 36px;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: var(--sans);
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--teal2); transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--snow);
+    padding: 16px 36px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: var(--sans);
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+
+  /* ── STATS BAR ── */
+  .stats {
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(0,180,216,0.15);
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 700px;
+    width: 100%;
+  }
+
+  .stat {
+    flex: 1;
+    padding: 20px 16px;
+    text-align: center;
+    border-right: 1px solid rgba(0,180,216,0.15);
+    background: rgba(0,180,216,0.04);
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-val {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-lbl {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--fog);
+    font-family: var(--mono);
+  }
+
+  /* ── PROBLEM ── */
+  .section {
+    padding: 100px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 16px;
+  }
+
+  .section h2 {
+    font-family: var(--serif);
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .section h2 em { font-style: italic; color: var(--teal); }
+
+  .section-lead {
+    font-size: 18px;
+    color: var(--mist);
+    max-width: 620px;
+    line-height: 1.8;
+    margin-bottom: 60px;
+  }
+
+  /* ── PROBLEM CARDS ── */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: rgba(0,180,216,0.1);
+    border: 1px solid rgba(0,180,216,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .problem-card {
+    background: var(--deep);
+    padding: 32px 28px;
+    transition: background 0.2s;
+  }
+
+  .problem-card:hover { background: var(--card); }
+
+  .problem-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fog);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .problem-card h3 {
+    font-family: var(--serif);
+    font-size: 20px;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .problem-card p {
+    font-size: 14px;
+    color: var(--mist);
+    line-height: 1.7;
+  }
+
+  /* ── SOLUTION / STEPS ── */
+  .steps-wrap {
+    position: relative;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 32px;
+    margin-bottom: 48px;
+    align-items: start;
+  }
+
+  .step-num {
+    width: 64px;
+    height: 64px;
+    border: 1px solid rgba(0,180,216,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--teal);
+    flex-shrink: 0;
+    background: rgba(0,180,216,0.05);
+  }
+
+  .step-content h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 8px;
+    padding-top: 16px;
+  }
+
+  .step-content p {
+    font-size: 15px;
+    color: var(--mist);
+    line-height: 1.75;
+  }
+
+  .step-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+  }
+
+  .tag-teal { background: rgba(0,180,216,0.12); color: var(--teal); }
+  .tag-gold { background: rgba(201,169,110,0.12); color: var(--gold); }
+  .tag-green { background: rgba(58,171,114,0.12); color: var(--green); }
+
+  /* ── WHY XRPL ── */
+  .xrpl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .xrpl-card {
+    background: var(--card);
+    border: 1px solid rgba(0,180,216,0.1);
+    border-radius: 4px;
+    padding: 28px 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .xrpl-card:hover {
+    border-color: rgba(0,180,216,0.3);
+    transform: translateY(-2px);
+  }
+
+  .xrpl-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .xrpl-card h4 {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--teal);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .xrpl-card p {
+    font-size: 13px;
+    color: var(--mist);
+    line-height: 1.6;
+  }
+
+  /* ── FOUNDER ── */
+  .founder-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .founder-text h2 {
+    margin-bottom: 24px;
+  }
+
+  .founder-text p {
+    font-size: 15px;
+    color: var(--mist);
+    line-height: 1.85;
+    margin-bottom: 20px;
+  }
+
+  .founder-text strong { color: var(--snow); }
+
+  .timeline {
+    border-left: 1px solid rgba(0,180,216,0.2);
+    padding-left: 24px;
+  }
+
+  .tl-item {
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -29px;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--teal);
+    opacity: 0.6;
+  }
+
+  .tl-year {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .tl-item p {
+    font-size: 13px;
+    color: var(--mist);
+    line-height: 1.6;
+  }
+
+  /* ── WAITLIST ── */
+  .waitlist-section {
+    background: var(--deep);
+    border-top: 1px solid rgba(0,180,216,0.1);
+    border-bottom: 1px solid rgba(0,180,216,0.1);
+    padding: 100px 24px;
+    text-align: center;
+  }
+
+  .waitlist-inner {
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .waitlist-inner h2 {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4vw, 44px);
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .waitlist-inner p {
+    font-size: 15px;
+    color: var(--mist);
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+
+  .waitlist-form {
+    display: flex;
+    gap: 12px;
+    max-width: 480px;
+    margin: 0 auto 16px;
+  }
+
+  .waitlist-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(0,180,216,0.2);
+    border-radius: 3px;
+    padding: 14px 18px;
+    color: var(--white);
+    font-size: 14px;
+    font-family: var(--sans);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .waitlist-input:focus { border-color: var(--teal); }
+  .waitlist-input::placeholder { color: var(--fog); }
+
+  .waitlist-note {
+    font-size: 12px;
+    color: var(--fog);
+    font-family: var(--mono);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 48px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--white);
+  }
+
+  .footer-logo span { color: var(--teal); }
+
+  .footer-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    color: var(--fog);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--teal); }
+
+  .footer-copy {
+    font-size: 12px;
+    color: var(--fog);
+    font-family: var(--mono);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,180,216,0.2), transparent);
+    margin: 0;
+  }
+
+  /* ── PATENT BADGE ── */
+  .badge-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 36px;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+
+  .badge-teal { border-color: rgba(0,180,216,0.3); color: var(--teal); }
+  .badge-gold { border-color: rgba(201,169,110,0.3); color: var(--gold); }
+  .badge-green { border-color: rgba(58,171,114,0.3); color: var(--green); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .founder-wrap { grid-template-columns: 1fr; gap: 48px; }
+    .waitlist-form { flex-direction: column; }
+    footer { flex-direction: column; text-align: center; }
+    .step { grid-template-columns: 48px 1fr; gap: 20px; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero > * {
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .hero > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero > *:nth-child(5) { animation-delay: 0.5s; }
+  .hero > *:nth-child(6) { animation-delay: 0.6s; }
 </style>
 </head>
 <body>
-<div id="app">
-<nav id="topbar">
-  <div class="logo" onclick="nav("dashboard")"><em>D</em>LOI<span class="logo-tag">RWA·XRPL</span></div>
-  <div style="display:flex;gap:5px;align-items:center">
-    <div id="kyc-pill" style="display:none" class="pill pill-j"><span class="ldot ldot-j"></span>KYC</div>
-    <div id="wal-pill" style="display:none" class="pill pill-rl"><span class="ldot ldot-rl"></span>RLUSD</div>
-    <button class="btn btn-ghost btn-sm" id="kyc-btn" onclick="openKyc()">Verify</button>
-    <button class="btn btn-gold btn-sm" onclick="openListModal()">+ List</button>
-  </div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span>D</span>LOI</a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#why-xrpl">Why XRPL</a></li>
+    <li><a href="#founder">Founder</a></li>
+    <li><a href="#waitlist">Join Waitlist</a></li>
+  </ul>
+  <a href="#waitlist" class="nav-cta">Join Waitlist</a>
 </nav>
-<div id="sbar">
-  <div class="sb"><div class="sbl">Volume</div><div class="sbv">$4.2B</div><div class="sbc">+18%</div></div>
-  <div class="sb"><div class="sbl">DLOIs</div><div class="sbv">8,931</div><div class="sbc">On-chain</div></div>
-  <div class="sb"><div class="sbl">RLUSD</div><div class="sbv">$182M</div><div class="sbc">Locked</div></div>
-  <div class="sb"><div class="sbl">RWA</div><div class="sbv">$182M</div><div class="sbc">Tokenized</div></div>
-  <div class="sb"><div class="sbl">Listings</div><div class="sbv">12+</div><div class="sbc">All Types</div></div>
-  <div class="sb"><div class="sbl">Partners</div><div class="sbv">47</div><div class="sbc">Active</div></div>
-  <div class="sb"><div class="sbl">Ledger</div><div class="sbv" id="lv">#80,241,992</div><div class="sbc">3.8s</div></div>
-</div>
-<div id="body">
-<div id="sidebar">
-  <div class="asl">PLATFORM</div>
-  <div class="asi" onclick="nav("dashboard")">⬡ Dashboard</div>
-  <div class="asi" onclick="nav("map")">🗺 Map View</div>
-  <div class="asi" onclick="nav("market")">◈ Listings</div>
-  <div class="asi" onclick="nav("my-lois")">📋 My DLOIs</div>
-  <div class="asi" onclick="nav("wallet")">◉ Wallet</div>
-  <div class="asi" onclick="nav("chain")">⛓ Chain</div>
-  <div class="asl" style="margin-top:6px">RWA</div>
-  <div class="asi" onclick="nav("rwa")">🌐 RWA Overview</div>
-  <div class="asi" onclick="nav("rwa-market")">◈ Token Market</div>
-  <div class="asi" onclick="nav("rwa-pf")">◆ Portfolio</div>
-  <div class="asi" onclick="nav("rwa-dist")">$ Distributions</div>
-  <div class="asl" style="margin-top:6px">ANALYTICS</div>
-  <div class="asi" onclick="nav("analytics")">📊 Predictive AI</div>
-  <div class="asi" onclick="nav("dealroom")">💬 Deal Room</div>
-  <div class="asi" onclick="nav("pdir")">🗺 Partner Map</div>
-  <div class="asi" onclick="nav("escrow")">🔒 Escrow Tracker</div>
-  <div class="asi" onclick="nav("notifs")">🔔 Notifications</div>
-  <div class="asl" style="margin-top:6px">PARTNERS</div>
-  <div class="asi" onclick="nav("partners")">🌐 Ecosystem</div>
-  <div class="asi" onclick="nav("p-att")">⚖ Attorneys</div>
-  <div class="asi" onclick="nav("p-title")">🏷 Title Co.</div>
-  <div class="asi" onclick="nav("p-banks")">🏦 Banks</div>
-  <div class="asi" onclick="nav("p-brokers")">🤝 Brokers</div>
-  <div class="asi" onclick="nav("p-apply")">★ Apply</div>
-  <div class="asl" style="margin-top:6px">ENTERPRISE</div>
-  <div class="asi" onclick="nav("embed")">🔌 API & Embed</div>
-  <div class="asi" onclick="nav("bulk")">📂 Bulk Import</div>
-  <div class="asi" onclick="nav("xrpl")">⛓ XRPL Explorer</div>
-  <div class="asi" onclick="nav("wl")">🏷 White Label</div>
-  <div class="asi" onclick="nav("about")">👤 Founder</div>
-  <div class="asi" onclick="nav("guide")">📖 User Guide</div>
-</div>
-<div id="main">
-  <div id="utabs">
-    <div class="utab on" onclick="setUT('buyer',this)">🏢 Buyer</div>
-    <div class="utab" onclick="setUT('seller',this)">🏷 Seller</div>
-    <div class="utab" onclick="setUT('investor',this)">📈 Investor</div>
-    <div class="utab" onclick="setUT('broker',this)">🤝 Broker</div>
-    <div class="utab" onclick="setUT('partners',this)">⚖ Partners</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Built on XRPL · Settled in RLUSD · Patent Pending</div>
+  <h1>Commercial Real Estate,<br><em>On-Chain.</em></h1>
+  <div class="hero-sub">The $300 trillion market that still runs on paper.</div>
+  <p class="hero-desc">DLOI replaces the broken CRE transaction process with on-chain Letters of Intent, RLUSD auto-escrow, AI-drafted contracts, Title NFT transfer at closing, and RWA tokenization — all on the XRP Ledger.</p>
+  <div class="hero-actions">
+    <a href="#waitlist" class="btn-primary">Join the Waitlist</a>
+    <a href="https://www.loom.com/share/c5115600bf8c4397b6edaaf9ad1e980d" target="_blank" class="btn-ghost">Watch Demo →</a>
   </div>
-  <div id="pg-dashboard" class="pg on"></div>
-  <div id="pg-map" class="pg"></div>
-  <div id="pg-market" class="pg"></div>
-  <div id="pg-my-lois" class="pg"></div>
-  <div id="pg-rwa" class="pg"></div>
-  <div id="pg-rwa-market" class="pg"></div>
-  <div id="pg-rwa-pf" class="pg"></div>
-  <div id="pg-rwa-dist" class="pg"></div>
-  <div id="pg-analytics" class="pg"></div>
-  <div id="pg-dealroom" class="pg"></div>
-  <div id="pg-pdir" class="pg"></div>
-  <div id="pg-escrow" class="pg"></div>
-  <div id="pg-notifs" class="pg"></div>
-  <div id="pg-partners" class="pg"></div>
-  <div id="pg-p-att" class="pg"></div>
-  <div id="pg-p-title" class="pg"></div>
-  <div id="pg-p-banks" class="pg"></div>
-  <div id="pg-p-brokers" class="pg"></div>
-  <div id="pg-p-apply" class="pg"></div>
-  <div id="pg-wallet" class="pg"></div>
-  <div id="pg-chain" class="pg"></div>
-  <div id="pg-embed" class="pg"></div>
-  <div id="pg-bulk" class="pg"></div>
-  <div id="pg-xrpl" class="pg"></div>
-  <div id="pg-wl" class="pg"></div>
-  <div id="pg-about" class="pg"></div>
-  <div id="pg-guide" class="pg"></div>
-</div>
-</div>
-<nav id="botnav">
-  <button class="bni on" id="bn-dashboard" onclick="nav("dashboard")"><span class="bni-i">⬡</span><span class="bni-l">Home</span></button>
-  <button class="bni" id="bn-map" onclick="nav("map")"><span class="bni-i">🗺</span><span class="bni-l">Map</span></button>
-  <button class="bni" id="bn-market" onclick="nav("market")"><span class="bni-i">◈</span><span class="bni-l">List</span></button>
-  <button class="bni" id="bn-rwa" onclick="nav("rwa")"><span class="bni-i">🌐</span><span class="bni-l">RWA</span></button>
-  <button class="bni" id="bn-wallet" onclick="nav("wallet")"><span class="bni-i">◉</span><span class="bni-l">Wallet</span></button>
-</nav>
-</div>
-<button id="ai-fab" onclick="toggleAI()">🤖</button>
-<div id="ai-panel">
-  <div style="padding:12px 13px;border-bottom:1px solid var(--rim);background:var(--deep);display:flex;align-items:center;gap:9px">
-    <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--rlusd));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🤖</div>
-    <div style="flex:1"><div style="font-family:var(--fd);font-size:14px;color:var(--gold)">DLOI <em>AI Assistant</em></div><div style="font-size:9px;color:var(--fog)">Powered by Claude · CRE + XRPL expert</div></div>
-    <button onclick="toggleAI()" style="background:none;border:none;color:var(--fog);font-size:18px;cursor:pointer">✕</button>
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-val">$300T</span>
+      <span class="stat-lbl">CRE Market</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">47→4</span>
+      <span class="stat-lbl">Days to Close</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">RLUSD</span>
+      <span class="stat-lbl">Settlement</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">3.8s</span>
+      <span class="stat-lbl">Finality</span>
+    </div>
   </div>
-  <div id="ai-msgs" style="flex:1;overflow-y:auto;padding:12px 13px">
-    <div class="ai-msg-a">Hi! I'm your DLOI AI Assistant. I know CRE, XRPL, RLUSD, LOIs, RWA tokenization, and everything on this platform. Ask me anything.<br><br>
-      <div style="margin-top:8px">
-        <div class="ai-chip" onclick="askAI('How does RLUSD escrow work?')">How does RLUSD escrow work?</div>
-        <div class="ai-chip" onclick="askAI('Explain RWA tokenization on DLOI')">Explain RWA tokenization</div>
-        <div class="ai-chip" onclick="askAI('What is a DLOI vs a traditional LOI?')">DLOI vs traditional LOI?</div>
-        <div class="ai-chip" onclick="askAI('Why use XRPL for CRE transactions?')">Why XRPL for CRE?</div>
-        <div class="ai-chip" onclick="askAI('How do I submit my first DLOI?')">How do I submit a DLOI?</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROBLEM -->
+<section class="section" id="problem">
+  <div class="section-eyebrow">The Problem</div>
+  <h2>CRE transactions are <em>broken.</em></h2>
+  <p class="section-lead">Every commercial real estate deal runs through a gauntlet of manual steps, siloed parties, and paper documents. The technology to fix it has existed for years. Nobody built the right platform — until now.</p>
+
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="problem-num">01</div>
+      <h3>47-Day Close</h3>
+      <p>Manual document handling, back-and-forth negotiations, and wire transfer delays stretch every deal to nearly two months. DLOI closes in 4.2 days.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">02</div>
+      <h3>$200K in Friction</h3>
+      <p>Attorneys, title companies, escrow agents, and brokers all working in silos — each billing separately for the same deal. DLOI puts them all on one platform.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">03</div>
+      <h3>No Programmable Escrow</h3>
+      <p>Earnest money held manually with no transparency or automation. DLOI auto-escrows in RLUSD the moment a DLOI is submitted — visible on-chain to all parties.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">04</div>
+      <h3>Inaccessible RWA Market</h3>
+      <p>The largest asset class in the world is locked behind minimum investments and illiquidity. DLOI tokenizes properties under Reg D 506(b) — open to accredited investors.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-eyebrow">The Solution</div>
+  <h2>One platform. <em>Every step.</em></h2>
+  <p class="section-lead">DLOI handles the complete CRE transaction lifecycle — from first offer to closed title — entirely on-chain. Five steps. 4.2 days. Zero paper.</p>
+
+  <div class="steps-wrap">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-tag tag-teal">LOI Submission</div>
+        <h3>Digital Letter of Intent — On-Chain</h3>
+        <p>Buyer submits a DLOI on the XRP Ledger. AI drafts the Letter of Intent in 60 seconds using property data, market comps, and buyer terms. No attorneys needed for the first draft. Immutable record from day one.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-tag tag-teal">RLUSD Escrow</div>
+        <h3>Earnest Money Auto-Escrowed in RLUSD</h3>
+        <p>The moment a DLOI is submitted, earnest money locks automatically in an XRPL smart contract in RLUSD — 1:1 USD, always stable. No wire transfers. No manual escrow agents. Visible on-chain to all parties instantly.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-tag tag-gold">AI Contracts</div>
+        <h3>AI-Drafted Purchase and Sale Agreement</h3>
+        <p>Claude AI generates the PSA from DLOI terms. Certified DLOI attorney partners review and approve — earning $500–2,000 per review instead of drafting from scratch. Faster, cheaper, fully documented.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-tag tag-green">Title NFT</div>
+        <h3>Title Deed Minted as NFT at Closing</h3>
+        <p>Property deed minted as an NFT on XRPL using the XLS-20 standard. Ownership transfers atomically with RLUSD payment in a single transaction. 3.8-second finality. $0.000012 gas. Immutable ownership record — forever.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-tag tag-gold">RWA Tokenization</div>
+        <h3>Fractional Ownership via RWA Tokens</h3>
+        <p>Properties tokenized as fractional ownership tokens under Reg D 506(b). Each token = $1,000 RLUSD. Monthly distributions paid directly to investor XRPL wallets in RLUSD. The institutional CRE market — now accessible.</p>
       </div>
     </div>
   </div>
-  <div style="border-top:1px solid var(--rim);padding:11px 13px;display:flex;gap:8px">
-    <input style="flex:1;background:var(--void);border:1px solid var(--edge);color:var(--text);padding:10px 11px;border-radius:3px;font-family:var(--ff);font-size:13px;outline:none" id="ai-inp" placeholder="Ask about DLOI, RLUSD, XRPL, CRE..." onkeydown="if(event.key==='Enter')sendAI()">
-    <button class="btn btn-violet btn-sm" onclick="sendAI()">Ask</button>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHY XRPL -->
+<section class="section" id="why-xrpl">
+  <div class="section-eyebrow">Why XRPL</div>
+  <h2>Built for <em>institutional</em> real estate.</h2>
+  <p class="section-lead">DLOI evaluated every major blockchain before choosing XRPL. The decision was driven by institutional CRE requirements that no other chain meets.</p>
+
+  <div class="xrpl-grid">
+    <div class="xrpl-card">
+      <div class="xrpl-icon">⚡</div>
+      <h4>3.8-Second Finality</h4>
+      <p>No reorganizations, no uncertainty. CRE transactions require certainty — XRPL delivers it.</p>
+    </div>
+    <div class="xrpl-card">
+      <div class="xrpl-icon">💰</div>
+      <h4>$0.000012 / Transaction</h4>
+      <p>A $50M deal costs fractions of a cent to settle. Ethereum gas makes institutional real estate economically impossible.</p>
+    </div>
+    <div class="xrpl-card">
+      <div class="xrpl-icon">🏦</div>
+      <h4>RLUSD Stablecoin</h4>
+      <p>Ripple's RLUSD is audited monthly, 1:1 USD-backed, and native to XRPL. Purpose-built for institutional settlement.</p>
+    </div>
+    <div class="xrpl-card">
+      <div class="xrpl-icon">📜</div>
+      <h4>Native NFT Standard</h4>
+      <p>XRPL's XLS-20 NFT standard is built for asset transfer — exactly what property deed tokenization requires.</p>
+    </div>
+    <div class="xrpl-card">
+      <div class="xrpl-icon">🔄</div>
+      <h4>Native DEX</h4>
+      <p>XRPL's built-in decentralized exchange lets RWA tokens trade without third-party infrastructure.</p>
+    </div>
+    <div class="xrpl-card">
+      <div class="xrpl-icon">🌐</div>
+      <h4>Institutional Trust</h4>
+      <p>Ripple has banking relationships in 55+ countries. DLOI's target customers already trust the ecosystem.</p>
+    </div>
   </div>
-</div>
-<div id="toasts"></div>
-<div id="MC"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FOUNDER -->
+<section class="section" id="founder">
+  <div class="founder-wrap">
+    <div class="founder-text">
+      <div class="section-eyebrow">The Founder</div>
+      <h2>Built from the <em>inside.</em></h2>
+      <p>Most blockchain real estate projects are built by developers who learned real estate. DLOI is built by a CRE professional who studied Bitcoin in 2015 — before most of the industry knew blockchain existed.</p>
+      <p><strong>Volkan Halilov</strong> spent 10 years closing office, industrial, retail, mixed-use, and multifamily transactions across New York City with $500M+ in deal exposure. In parallel, he spent that same decade studying blockchain — publishing on Bitcoin's potential impact on CRE infrastructure years before the industry paid attention.</p>
+      <p>That combination produced the only platform that gets both sides exactly right.</p>
+      <div class="badge-row" style="justify-content:flex-start; margin-top: 28px;">
+        <span class="badge badge-teal">Patent Pending</span>
+        <span class="badge badge-gold">Delaware C-Corp</span>
+        <span class="badge badge-green">Built on XRPL</span>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">2015</div>
+        <p>Studied Bitcoin whitepaper. Published on Bitcoin's potential impact on CRE infrastructure — years ahead of the industry.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2015–2018</div>
+        <p>Continued publishing on distributed ledger tech applied to CRE — smart contract escrow, immutable title records, blockchain settlement.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2018–2021</div>
+        <p>Tracked Ethereum ERC-20/ERC-721 and early RWA experiments. Documented why gas costs made it impractical for institutional real estate.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2021–2023</div>
+        <p>Identified XRPL as the superior settlement layer for institutional CRE. Studied RLUSD, XLS-20, native DEX, and Ripple's institutional strategy.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2023–2024</div>
+        <p>Began DLOI architecture — combining 10 years of CRE experience with 10 years of blockchain study.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2025–2026</div>
+        <p>Built working DLOI prototype. Delaware C-Corp incorporated. Provisional patent filed. Grant application submitted to XRPL.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WAITLIST -->
+<section class="waitlist-section" id="waitlist">
+  <div class="waitlist-inner">
+    <div class="section-eyebrow" style="justify-content:center;display:flex;">Early Access</div>
+    <h2>Be first on XRPL.</h2>
+    <p>DLOI is currently in development heading to XRPL Mainnet. Join the waitlist for early access — brokers, investors, attorneys, and title companies welcome.</p>
+    <div class="waitlist-form">
+      <input type="email" class="waitlist-input" placeholder="your@email.com" id="email-input">
+      <button class="btn-primary" onclick="handleWaitlist()">Join</button>
+    </div>
+    <div class="waitlist-note" id="waitlist-msg">No spam. Early access only.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span>D</span>LOI — Digital Letter of Intent</div>
+  <ul class="footer-links">
+    <li><a href="https://github.com/dloiplatform/DLOI-Platform" target="_blank">GitHub</a></li>
+    <li><a href="https://www.linkedin.com/company/dloi-platform/" target="_blank">LinkedIn</a></li>
+    <li><a href="mailto:volkan@dloi.io">volkan@dloi.io</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 DLOI Platform, Inc. · Patent Pending · Built on XRPL</div>
+</footer>
+
 <script>
-const PROPS=[
-{id:1,name:"One Market Plaza",addr:"San Francisco, CA",type:"Office",price:48500000,cap:5.2,noi:2522000,occ:94,sf:1024000,yr:2002,icon:"🏢",bg:"#0d2040",sym:"OMP001",tok:true,sold:38200,total:48500,inv:142,score:94,trend:true,lat:37.79,lng:-122.40,status:"ACTIVE",yld:"5.2%"},
-{id:2,name:"Westfield Industrial",addr:"Dallas, TX",type:"Industrial",price:22750000,cap:6.8,noi:1547000,occ:100,sf:480000,yr:2008,icon:"🏭",bg:"#1a1a0a",sym:"WIP002",tok:true,sold:22750,total:22750,inv:98,score:88,trend:false,lat:32.78,lng:-96.80,status:"FUNDED",yld:"6.8%"},
-{id:3,name:"Harbor View",addr:"Miami, FL",type:"Mixed-Use",price:67200000,cap:4.9,noi:3292800,occ:91,sf:820000,yr:2019,icon:"🏗️",bg:"#001a2a",sym:"HVM003",tok:true,sold:51840,total:67200,inv:284,score:91,trend:true,lat:25.76,lng:-80.19,status:"ACTIVE",yld:"4.9%"},
-{id:4,name:"Pinnacle Retail",addr:"Austin, TX",type:"Retail",price:14900000,cap:7.1,noi:1057900,occ:88,sf:210000,yr:2015,icon:"🏪",bg:"#1a0a0a",sym:"PRC004",tok:false,sold:0,total:0,inv:0,score:82,trend:false,lat:30.27,lng:-97.74,status:"CLOSED",yld:"7.1%"},
-{id:5,name:"Skyline Office",addr:"Chicago, IL",type:"Office",price:91000000,cap:4.6,noi:4186000,occ:96,sf:1400000,yr:2002,icon:"🏙️",bg:"#0a0a1a",sym:"SOC005",tok:true,sold:18200,total:91000,inv:64,score:96,trend:true,lat:41.88,lng:-87.63,status:"ACTIVE",yld:"4.6%"},
-{id:6,name:"Riverfront Logistics",addr:"Memphis, TN",type:"Industrial",price:31200000,cap:7.4,noi:2308800,occ:100,sf:660000,yr:2018,icon:"🚚",bg:"#0a1a10",sym:"RLH006",tok:false,sold:0,total:0,inv:0,score:89,trend:false,lat:35.15,lng:-90.05,status:"ACTIVE",yld:"7.4%"},
-{id:7,name:"Metro Medical",addr:"Houston, TX",type:"Medical",price:38500000,cap:5.8,noi:2233000,occ:97,sf:220000,yr:2017,icon:"🏥",bg:"#0a1a1a",sym:"MMC007",tok:false,sold:0,total:0,inv:0,score:93,trend:true,lat:29.76,lng:-95.37,status:"ACTIVE",yld:"5.8%"},
-{id:8,name:"Lakewood Multifamily",addr:"Denver, CO",type:"Multifamily",price:54000000,cap:4.2,noi:2268000,occ:95,sf:380000,yr:2021,icon:"🏘️",bg:"#0a0a2a",sym:"LMF008",tok:false,sold:0,total:0,inv:0,score:90,trend:true,lat:39.74,lng:-104.99,status:"ACTIVE",yld:"4.2%"},
-{id:9,name:"Sunset Storage",addr:"Phoenix, AZ",type:"Self-Storage",price:9800000,cap:6.2,noi:607600,occ:92,sf:85000,yr:2019,icon:"🗄️",bg:"#1a0a1a",sym:"SSS009",tok:false,sold:0,total:0,inv:0,score:79,trend:false,lat:33.45,lng:-112.07,status:"ACTIVE",yld:"6.2%"},
-{id:10,name:"Grand Hotel",addr:"Nashville, TN",type:"Hospitality",price:72000000,cap:6.5,noi:4680000,occ:78,sf:520000,yr:2016,icon:"🏨",bg:"#1a1a0a",sym:"GHS010",tok:false,sold:0,total:0,inv:0,score:85,trend:true,lat:36.16,lng:-86.78,status:"ACTIVE",yld:"6.5%"},
-{id:11,name:"Westside Research Park",addr:"Seattle, WA",type:"R&D / Lab",price:125000000,cap:4.1,noi:5125000,occ:98,sf:650000,yr:2022,icon:"🔬",bg:"#00101a",sym:"WRP011",tok:false,sold:0,total:0,inv:0,score:97,trend:true,lat:47.61,lng:-122.33,status:"ACTIVE",yld:"4.1%"},
-{id:12,name:"Eastport Land Site",addr:"Atlanta, GA",type:"Land",price:8200000,cap:0,noi:0,occ:0,sf:425000,yr:0,icon:"🏞️",bg:"#0a1a00",sym:"ELS012",tok:false,sold:0,total:0,inv:0,score:72,trend:false,lat:33.75,lng:-84.39,status:"ACTIVE",yld:"N/A"},
-];
-const TC={Office:"#00b4d8",Industrial:"#3aab72",Retail:"#c9a96e","Mixed-Use":"#7a62d4",Medical:"#d45840",Multifamily:"#3ab8c8","Self-Storage":"#8b6914",Hospitality:"#c86e3a","R&D / Lab":"#6e3ac8",Land:"#4a8a4a"};
-const CURRS={RLUSD:{icon:"◈",c:"#00b4d8",peg:"1:1 USD",issuer:"Ripple Labs",best:true},USDC:{icon:"◉",c:"#2775ca",peg:"1:1 USD",issuer:"Circle",best:false},USD_IOU:{icon:"◇",c:"#3aab72",peg:"1:1 USD",issuer:"XRPL Gateway",best:false}};
-const PARTNERS=[
-{id:1,name:"Morrison & Klein LLP",type:"Attorney",state:"NY",city:"New York",rating:4.9,deals:142,cert:true,x:82,y:28,spec:"CRE Law, Smart Contracts"},
-{id:2,name:"Pacific Title & Escrow",type:"Title",state:"CA",city:"San Francisco",rating:4.8,deals:89,cert:true,x:8,y:44,spec:"Title Search, NFT Deeds"},
-{id:3,name:"Meridian CRE Law",type:"Attorney",state:"IL",city:"Chicago",rating:4.7,deals:67,cert:true,x:60,y:30,spec:"Commercial Real Estate"},
-{id:4,name:"Sunbelt Title Group",type:"Title",state:"TX",city:"Dallas",rating:4.6,deals:54,cert:true,x:44,y:57,spec:"Title, Blockchain NFTs"},
-{id:5,name:"Atlantic Capital Bank",type:"Bank",state:"NY",city:"New York",rating:4.8,deals:38,cert:true,x:84,y:27,spec:"CRE Lending"},
-{id:6,name:"Apex Title Services",type:"Title",state:"FL",city:"Miami",rating:4.9,deals:76,cert:true,x:74,y:70,spec:"Luxury CRE"},
-{id:7,name:"Cascade Legal Group",type:"Attorney",state:"WA",city:"Seattle",rating:4.7,deals:34,cert:true,x:7,y:15,spec:"Tech Campus"},
-{id:8,name:"Rocky Mtn Lending",type:"Bank",state:"CO",city:"Denver",rating:4.6,deals:29,cert:false,x:33,y:38,spec:"Multifamily"},
-];
-const PTC={Attorney:"#7a62d4",Title:"#3ab8c8",Bank:"#c9a96e"};
-const S={page:"dashboard",ut:"buyer",kycDone:false,walletOn:false,wallet:null,myLOIs:[],rwaPortfolio:[],rwaDists:[],userListings:[],escrows:[{id:"ESC-OMP001",prop:"One Market Plaza",amount:1455000,currency:"RLUSD",status:"LOCKED",condition:"PSA_EXECUTION",hash:"0x4f8a2b...a1c9",ledger:80241992,buyer:"Apex Capital"},{id:"ESC-HVM003",prop:"Harbor View",amount:2016000,currency:"USDC",status:"LOCKED",condition:"PSA_EXECUTION",hash:"0x9c1d4e...b2d8",ledger:80248812,buyer:"Meridian RE"},{id:"ESC-SOC005",prop:"Skyline Office",amount:2685000,currency:"RLUSD",status:"PENDING_RELEASE",condition:"DD_COMPLETE",hash:"0x7b3f1a...c4e2",ledger:80235441,buyer:"Pacific Crest"}],chain:[{type:"RLUSD",cls:"ev-rl",desc:"$1,455,000 RLUSD escrowed — One Market Plaza",t:"2m ago"},{type:"DLOI",cls:"ev-d",desc:"DLOI deployed — Skyline Office $91M",t:"8m ago"},{type:"RWA",cls:"ev-rl",desc:"OMP001 tokens — $38.2M of $48.5M raised",t:"1h ago"},{type:"PSA",cls:"ev-p",desc:"PSA executed — Harbor View · USDC",t:"2h ago"}],mapFilt:"All",mktFilt:"All",pdirFilt:"All",ledger:80241992,dealMsgs:[{from:"Apex Capital",you:false,text:"We have reviewed the LOI and are prepared to proceed.",time:"10:24 AM"},{from:"You",you:true,text:"Confirmed. Property available Mon–Wed 9AM–5PM.",time:"10:31 AM"},{from:"Sarah Chen (Atty)",you:false,text:"2 minor PSA clause adjustments in Section 8.",time:"11:02 AM"},{from:"DLOI System",sys:true,text:"⛓ RLUSD escrow confirmed: $1,455,000 · Ledger #80241992",time:"11:15 AM"}],notifPrefs:{dloi_submitted:true,dloi_accepted:true,escrow_funded:true,psa_executed:true,title_nft:true,rwa_distribution:true,tenant_alert:false,deal_room_msg:true,email:true,push:true,sms:false,webhook:true},explorerTxns:{},aiOpen:false};
-
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const rand=n=>Math.floor(Math.random()*n);
-const rndH=()=>"0x"+Array.from({length:6},()=>rand(16).toString(16)).join("")+"..."+Array.from({length:4},()=>rand(16).toString(16)).join("");
-const rndId=()=>Math.random().toString(36).substr(2,9).toUpperCase();
-const fmt=n=>n>=1e6?"$"+(n/1e6).toFixed(1)+"M":"$"+n.toLocaleString();
-
-function h(id,html){const e=document.getElementById(id);if(e)e.innerHTML=html;}
-function cm(){h("MC","");}
-function toast(t,type,icon){
-  icon=icon||"◈";type=type||"info";
-  const el=document.createElement("div");
-  el.className="toast "+type;
-  el.innerHTML='<span class="ti-i">'+icon+'</span><span class="ti-t">'+t+'</span><span class="ti-x" onclick="this.parentElement.remove()">✕</span>';
-  document.getElementById("toasts").appendChild(el);
-  setTimeout(function(){el.remove();},4500);
-}
-function addChain(type,cls,desc){
-  S.chain.unshift({type:type,cls:cls,desc:desc,t:"just now"});
-  S.chain=S.chain.slice(0,20);
-  if(S.page==="chain")renderChain();
-  if(S.page==="dashboard"){var dc=document.getElementById("dc");if(dc)dc.innerHTML=chainHTML(4);}
-}
-function chainHTML(n){
-  return S.chain.slice(0,n).map(function(e){
-    return '<div class="cev"><span class="et '+e.cls+'">'+e.type+'</span><span style="flex:1;color:var(--fog);font-size:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+e.desc+'</span><span style="font-size:8px;color:var(--haze);flex-shrink:0;margin-left:5px">'+e.t+'</span></div>';
-  }).join("");
-}
-function propCard(p){
-  var sc=p.status==="ACTIVE"?"sc-a":p.status==="FUNDED"?"sc-f":"sc-c";
-  var col=TC[p.type]||"#c9a96e";
-  var rwa=p.tok&&p.total>0?'<div style="margin-bottom:8px"><div style="font-size:8px;color:var(--fog);margin-bottom:3px">'+fmt(p.sold*1000)+' raised · '+p.inv+' investors · '+Math.round(p.sold/p.total*100)+'%</div><div class="prog"><div class="prog-f" style="width:'+Math.round(p.sold/p.total*100)+'%"></div></div></div>':"";
-  return '<div class="pc" onclick="openDetail('+p.id+')" style="border-top:2px solid '+col+'20"><div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><div style="width:36px;height:36px;border-radius:3px;background:'+p.bg+';display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">'+p.icon+'</div><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:12px;margin-bottom:1px">'+p.name+'</div><div style="font-size:9px;color:var(--fog);margin-bottom:4px">'+p.addr+'</div><div style="display:flex;gap:4px;flex-wrap:wrap"><span class="tag tg">'+p.type+'</span><span class="'+sc+'">'+p.status+'</span>'+(p.tok?'<span class="tag trl">RWA</span>':"")+(p.trend?'<span class="tag tj">🔥</span>':"")+'</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:var(--fm);font-size:13px;font-weight:700;color:var(--gold)">'+fmt(p.price)+'</div><div style="font-size:9px;color:var(--fog)">'+(p.cap>0?p.cap+"% Cap":"N/A")+'</div></div></div>'+rwa+'<div style="display:flex;gap:8px" onclick="event.stopPropagation()"><button class="btn btn-ghost btn-sm" style="flex:1" onclick="toast(\'Deal room opened\',\'info\',\'💬\')">Deal Room</button><button class="btn btn-rlusd btn-sm" style="flex:1" '+(p.status==="CLOSED"?"disabled":"")+" onclick=\"openLOI("+p.id+")\">"+(p.status==="CLOSED"?"Closed":"DLOI →")+'</button></div></div>';
-}
-function nav(pg){
-  document.getElementById("pg-"+S.page)&&document.getElementById("pg-"+S.page).classList.remove("on");
-  S.page=pg;
-  var el=document.getElementById("pg-"+pg);
-  if(el){el.classList.add("on");document.getElementById("main").scrollTop=0;}
-  document.querySelectorAll(".asi").forEach(function(a){a.classList.toggle("on",(a.getAttribute("onclick")||"").indexOf("'"+pg+"'")>-1);});
-  ["dashboard","map","market","rwa","wallet"].forEach(function(id){var b=document.getElementById("bn-"+id);if(b)b.classList.toggle("on",id===pg);});
-  var R={dashboard:renderDashboard,map:renderMap,market:renderMarket,"my-lois":renderMyLois,rwa:renderRWA,"rwa-market":renderRWAMarket,"rwa-pf":renderRWAPF,"rwa-dist":renderRWADist,analytics:renderAnalytics,dealroom:renderDealRoom,pdir:renderPDir,escrow:renderEscrow,notifs:renderNotifs,partners:renderPartners,"p-att":function(){renderPPage("att");},"p-title":function(){renderPPage("title");},"p-banks":function(){renderPPage("banks");},"p-brokers":function(){renderPPage("brokers");},"p-apply":renderPApply,wallet:renderWallet,chain:renderChain,embed:renderEmbed,bulk:renderBulk,xrpl:renderXRPL,wl:renderWL,about:renderAbout,guide:renderGuide};
-  if(R[pg])R[pg]();
-}
-function setUT(t,el){S.ut=t;document.querySelectorAll(".utab").forEach(function(x){x.classList.remove("on");});el.classList.add("on");}
-
-function lx(lng){return((lng-(-130))/((-65)-(-130)))*540+30;}
-function ly(lat){return((50-lat)/(50-24))*260+15;}
-
-function renderDashboard(){
-  var gr={buyer:"Ready to find your next deal?",seller:"You have incoming DLOIs.",investor:"Portfolio growing.",broker:"Deals closing this week.",partners:"Partner Ecosystem ready."};
-  h("pg-dashboard",'<div class="ph"><div><div class="pt">Welcome, <em>Volkan</em></div><div class="ps">'+(gr[S.ut]||gr.buyer)+'</div></div><div style="display:flex;gap:8px"><button class="btn btn-rlusd btn-sm" onclick="nav(\'map\')">🗺 Map</button><button class="btn btn-gold btn-sm" onclick="nav(\'rwa\')">RWA →</button></div></div><div class="g4 mb8"><div class="card"><div class="ct">DLOIs</div><div class="cv text-rl">'+(S.myLOIs.length||3)+'</div></div><div class="card"><div class="ct">RLUSD</div><div class="cv text-rl">$2.85M</div></div><div class="card"><div class="ct">RWA Yield</div><div class="cv text-jade">5.6%</div></div><div class="card"><div class="ct">Listings</div><div class="cv text-gold">'+(PROPS.length+S.userListings.length)+'</div></div></div><div class="sh">Trending <em>Properties</em></div>'+PROPS.filter(function(p){return p.trend;}).slice(0,3).map(propCard).join("")+'<div class="sh mt8">Chain <em>Activity</em></div><div id="dc">'+chainHTML(4)+'</div><div style="margin-top:12px;background:linear-gradient(135deg,#020c14,#041828);border:1px solid rgba(201,169,110,.2);border-radius:5px;padding:13px;cursor:pointer" onclick="nav(&#39;guide&#39;)"><div style="display:flex;align-items:center;gap:10px"><div style="font-size:28px">📖</div><div style="flex:1"><div style="font-family:var(--fd);font-size:14px;color:var(--gold)">Platform User Guide</div><div style="font-size:10px;color:var(--fog);margin-top:2px">Every feature for every user type — Buyer, Seller, Investor, Broker, Partners</div></div><div style="color:var(--gold);font-size:18px">→</div></div></div>');
-}
-
-function renderMap(){
-  var types=["All","Office","Industrial","Retail","Mixed-Use","Medical","Multifamily","Self-Storage","Hospitality","R&D / Lab","Land"];
-  var tabs=types.map(function(t){return '<div class="tab'+(t===S.mapFilt?" on":"")+"\" onclick=\"S.mapFilt='"+t+"';this.parentElement.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});this.classList.add('on');rMapPins()\">"+t+"</div>";}).join("");
-  h("pg-map",'<div class="ph"><div><div class="pt">Property <em>Map</em></div><div class="ps">All 12 asset classes · Tap any pin</div></div></div><div class="tabs">'+tabs+'</div><div class="map-wrap" style="height:340px"><div style="position:absolute;top:8px;left:8px;right:50px;z-index:10"><input style="width:100%;background:rgba(2,6,9,.92);border:1px solid var(--rim);border-radius:18px;padding:7px 13px;font-size:11px;color:var(--text);font-family:var(--ff);outline:none" placeholder="🔍 Search..." id="mq" oninput="rMapPins()"></div><svg id="msv" viewBox="0 0 600 300" style="width:100%;height:100%;display:block"><rect width="600" height="300" fill="#0a1628"/><path d="M55,90 L150,65 L250,55 L350,50 L440,55 L515,75 L548,100 L555,130 L545,165 L520,195 L480,215 L420,225 L350,215 L280,215 L200,230 L140,235 L90,220 L60,195 L48,160 L50,120 Z" fill="#0d2030" stroke="#2a4860" stroke-width="1.2"/></svg><div id="mleg" style="position:absolute;top:46px;left:8px;background:rgba(2,6,9,.9);border:1px solid var(--rim);border-radius:4px;padding:5px 8px"></div><div id="mtt" style="display:none;position:absolute;bottom:0;left:0;right:0;background:rgba(2,6,9,.97);border-top:2px solid var(--rlusd);padding:11px 13px"></div></div><div class="g4" id="mst"></div>');
-  rMapPins();
-  var all=PROPS.concat(S.userListings);
-  h("mst",[["Office",all.filter(function(p){return p.type==="Office";}).length,"var(--rlusd)"],["Industrial",all.filter(function(p){return p.type==="Industrial";}).length,"var(--jade)"],["Retail",all.filter(function(p){return p.type==="Retail";}).length,"var(--gold)"],["Other",all.filter(function(p){return !["Office","Industrial","Retail"].includes(p.type);}).length,"var(--teal)"]].map(function(a){return '<div class="card"><div class="ct">'+a[0]+'</div><div class="cv" style="color:'+a[2]+'">'+a[1]+'</div><div class="cs">Properties</div></div>';}).join(""));
-  h("mleg",Object.entries(TC).slice(0,6).map(function(e){return '<div style="display:flex;align-items:center;gap:4px;margin-bottom:2px"><div style="width:6px;height:6px;border-radius:50%;background:'+e[1]+'"></div><span style="font-size:6px;color:rgba(255,255,255,.4)">'+e[0]+'</span></div>';}).join(""));
-}
-function rMapPins(){
-  var svg=document.getElementById("msv");if(!svg)return;
-  svg.querySelectorAll(".pin").forEach(function(e){e.remove();});
-  var q=(document.getElementById("mq")&&document.getElementById("mq").value||"").toLowerCase();
-  var list=PROPS.concat(S.userListings);
-  if(S.mapFilt!=="All")list=list.filter(function(p){return p.type===S.mapFilt;});
-  if(q)list=list.filter(function(p){return p.name.toLowerCase().indexOf(q)>-1||(p.addr||"").toLowerCase().indexOf(q)>-1;});
-  list.filter(function(p){return p.lat&&p.lng;}).forEach(function(p){
-    var x=lx(p.lng),y=ly(p.lat),col=TC[p.type]||"#c9a96e";
-    var g=document.createElementNS("http://www.w3.org/2000/svg","g");
-    g.setAttribute("class","pin");g.style.cursor="pointer";
-    g.innerHTML='<circle cx="'+(x+1)+'" cy="'+(y+2)+'" r="7" fill="rgba(0,0,0,0.4)"/><circle cx="'+x+'" cy="'+y+'" r="7" fill="'+col+'"/><circle cx="'+x+'" cy="'+y+'" r="5" fill="'+col+'bb"/><text x="'+x+'" y="'+(y+1.5)+'" text-anchor="middle" dominant-baseline="middle" font-size="4" font-weight="800" fill="rgba(0,0,0,0.8)" font-family="sans-serif">'+p.type.charAt(0)+'</text>';
-    (function(pp){g.onclick=function(){
-      var tt=document.getElementById("mtt");if(!tt)return;
-      tt.style.display="block";
-      tt.innerHTML='<div style="display:flex;gap:9px;align-items:center"><div style="width:34px;height:34px;border-radius:3px;background:'+pp.bg+';display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">'+pp.icon+'</div><div style="flex:1"><div style="font-weight:700;font-size:13px">'+pp.name+'</div><div style="font-size:9px;color:var(--fog)">'+pp.addr+'</div><div style="font-family:var(--fm);font-size:11px;color:var(--gold);font-weight:700;margin-top:3px">'+fmt(pp.price)+'</div></div><div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0"><button class="btn btn-ghost btn-sm" onclick="openDetail('+pp.id+')">Details</button>'+(pp.status!=="CLOSED"?'<button class="btn btn-rlusd btn-sm" onclick="openLOI('+pp.id+')">DLOI →</button>':"")+'</div></div>';
-    };})(p);
-    svg.appendChild(g);
-  });
-}
-
-function renderMarket(){
-  var types=["All","Office","Industrial","Retail","Mixed-Use","Medical","Multifamily","Self-Storage","Hospitality","R&D / Lab","Land"];
-  var tabs=types.map(function(t){return '<div class="tab'+(t===S.mktFilt?" on":"")+"\" onclick=\"S.mktFilt='"+t+"';this.parentElement.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});this.classList.add('on');bML()\">"+t+"</div>";}).join("");
-  h("pg-market",'<div class="ph"><div><div class="pt">All <em>Listings</em></div><div class="ps">12 asset classes · RLUSD settlement</div></div></div><div style="display:flex;gap:8px;margin-bottom:8px"><input class="fi" style="flex:1;font-size:13px;padding:8px 11px" placeholder="🔍 Search..." id="mkq" oninput="bML()"><select class="fi" id="mks" onchange="bML()" style="width:90px;padding:8px;font-size:11px"><option value="score">Score</option><option value="cap">Cap Rate</option><option value="price">Price</option></select></div><div class="tabs">'+tabs+'</div><div id="mll"></div>');
-  bML();
-}
-function bML(){
-  var q=(document.getElementById("mkq")&&document.getElementById("mkq").value||"").toLowerCase();
-  var sort=(document.getElementById("mks")&&document.getElementById("mks").value)||"score";
-  var list=PROPS.concat(S.userListings);
-  if(S.mktFilt!=="All")list=list.filter(function(p){return p.type===S.mktFilt;});
-  if(q)list=list.filter(function(p){return p.name.toLowerCase().indexOf(q)>-1||p.addr.toLowerCase().indexOf(q)>-1;});
-  if(sort==="cap")list.sort(function(a,b){return b.cap-a.cap;});
-  else if(sort==="price")list.sort(function(a,b){return a.price-b.price;});
-  else list.sort(function(a,b){return b.score-a.score;});
-  h("mll",list.map(propCard).join(""));
-}
-
-function renderMyLois(){
-  var demo=[{prop:PROPS[0],status:"Accepted",offer:"$47,800,000",currency:"RLUSD",earnest:"$1,434,000"},{prop:PROPS[2],status:"Countered",offer:"$65,000,000",currency:"USDC",earnest:"$1,950,000"},{prop:PROPS[4],status:"Pending",offer:"$89,500,000",currency:"RLUSD",earnest:"$2,685,000"}];
-  var all=S.myLOIs.length?S.myLOIs.map(function(l){return {prop:l.property,status:"Deployed",offer:l.terms&&l.terms.offer||fmt(l.property.price),currency:l.terms&&l.terms.currency||"RLUSD",earnest:"$"+Math.floor(l.property.price*.03).toLocaleString()};}):demo;
-  var sc={Accepted:"var(--jade)",Countered:"var(--gold)",Pending:"var(--rlusd)",Deployed:"var(--rlusd)"};
-  h("pg-my-lois",'<div class="ph"><div><div class="pt">My <em>DLOIs</em></div></div><button class="btn btn-rlusd btn-sm" onclick="openLOI(PROPS[0].id)">+ New</button></div><div class="g3 mb8"><div class="card"><div class="ct">Total</div><div class="cv text-rl">'+all.length+'</div></div><div class="card"><div class="ct">Accepted</div><div class="cv text-jade">1</div></div><div class="card"><div class="ct">Pending</div><div class="cv text-gold">2</div></div></div>'+
-  all.map(function(d){return '<div style="background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:11px;margin-bottom:7px"><div style="display:flex;gap:9px;align-items:center;margin-bottom:8px"><div style="width:30px;height:30px;border-radius:3px;background:'+d.prop.bg+';display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">'+d.prop.icon+'</div><div style="flex:1"><div style="font-weight:700;font-size:12px">'+d.prop.name+'</div></div><span style="background:'+(sc[d.status]||"var(--fog)")+'18;color:'+(sc[d.status]||"var(--fog)")+';padding:2px 7px;border-radius:2px;font-size:7px;font-weight:700">'+d.status+'</span></div><div class="g4"><div><div class="xs text-fog">Offer</div><div class="sm fm text-gold">'+d.offer+'</div></div><div><div class="xs text-fog">Currency</div><div class="sm fm" style="color:'+(d.currency==="RLUSD"?"var(--rlusd)":"#2775ca")+'">'+d.currency+'</div></div><div><div class="xs text-fog">Earnest</div><div class="sm fm text-gold">'+d.earnest+'</div></div><div><div class="xs text-fog">Network</div><div class="sm fm text-rl">XRPL</div></div></div></div>';}).join(""));
-}
-
-function renderRWA(){
-  h("pg-rwa",'<div class="ph"><div><div class="pt">RWA <em>Tokenization</em></div><div class="ps">First CRE-native RWA on XRPL · Reg D · RLUSD</div></div></div><div style="background:linear-gradient(135deg,#020c14,#041828);border:1px solid rgba(0,180,216,.2);border-radius:5px;padding:14px;margin-bottom:12px"><div style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:10px;background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.25);font-size:7px;font-weight:700;color:var(--rlusd);margin-bottom:9px"><span class="ldot ldot-rl"></span>XRPL RWA · Reg D 506(b)</div><div style="font-family:var(--fd);font-size:16px;margin-bottom:6px">Property <span style="color:var(--rlusd);font-style:italic">Tokenized</span> on XRPL</div><div style="font-size:12px;color:var(--fog);line-height:1.7;margin-bottom:11px">Each property held in SPV (LLC). Tokens = LLC membership interests. RLUSD distributions monthly. Accredited investors via Reg D 506(b).</div><div style="display:flex;gap:18px;flex-wrap:wrap">'+[["$182M","Tokenized"],["588","Investors"],["RLUSD","Stable 1:1"],["Reg D","Compliant"]].map(function(a){return '<div><div style="font-family:var(--fm);font-size:16px;font-weight:700;color:var(--rlusd)">'+a[0]+'</div><div style="font-size:7px;text-transform:uppercase;color:var(--fog);margin-top:2px">'+a[1]+'</div></div>';}).join("")+'</div></div><div class="sh">Tokenized <em>Properties</em></div>'+
-  PROPS.filter(function(p){return p.tok;}).map(function(p){return '<div style="background:var(--dark);border:1px solid rgba(0,180,216,.2);border-radius:4px;padding:11px;margin-bottom:7px"><div style="display:flex;gap:10px;align-items:center;margin-bottom:7px"><div style="width:34px;height:34px;border-radius:3px;background:'+p.bg+';display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">'+p.icon+'</div><div style="flex:1"><div style="font-weight:700;font-size:12px">'+p.name+'</div><div style="font-size:9px;color:var(--fog)">'+p.addr+'</div></div><div style="text-align:right"><div style="font-family:var(--fm);font-size:11px;color:var(--rlusd);font-weight:700">'+fmt(p.price)+'</div><div style="font-size:9px;color:var(--jade)">'+p.yld+' yield</div></div></div><div class="prog mb4"><div class="prog-f" style="width:'+Math.round(p.sold/p.total*100)+'%"></div></div><div style="display:flex;justify-content:space-between;font-size:8px;color:var(--fog);margin-bottom:8px"><span>'+fmt(p.sold*1000)+' raised · '+p.inv+' investors</span><span>'+Math.round(p.sold/p.total*100)+'%</span></div><button class="btn btn-rlusd btn-sm w100" onclick="nav(\'rwa-market\')">Invest RLUSD →</button></div>';}).join(""));
-}
-function renderRWAMarket(){
-  h("pg-rwa-market",'<div class="ph"><div><div class="pt">Token <em>Marketplace</em></div><div class="ps">RLUSD · Reg D · XRPL</div></div></div>'+
-  PROPS.filter(function(p){return p.tok;}).map(function(p){return '<div style="background:var(--dark);border:1px solid rgba(0,180,216,.2);border-radius:5px;padding:12px;margin-bottom:9px"><div style="display:flex;gap:10px;align-items:center;margin-bottom:8px"><div style="width:36px;height:36px;border-radius:3px;background:'+p.bg+';display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">'+p.icon+'</div><div style="flex:1"><div style="font-weight:700;font-size:13px">'+p.name+'</div><div style="font-size:9px;color:var(--fog)">'+p.addr+'</div></div><div style="text-align:right"><div style="font-family:var(--fm);font-size:12px;font-weight:700;color:var(--rlusd)">$1,000 RLUSD</div><div style="font-size:9px;color:var(--jade)">'+p.yld+' yield</div></div></div><div class="g4 mb8">'+[["Val.",fmt(p.price)],["Cap",p.cap+"%"],["NOI",fmt(p.noi)],["Occ.",p.occ+"%"]].map(function(a){return '<div style="background:var(--void);border:1px solid var(--rim);border-radius:3px;padding:5px;text-align:center"><div style="font-family:var(--fm);font-size:10px;font-weight:700;color:var(--jade)">'+a[1]+'</div><div style="font-size:7px;text-transform:uppercase;color:var(--fog)">'+a[0]+'</div></div>';}).join("")+'</div><div class="prog mb5"><div class="prog-f" style="width:'+Math.round(p.sold/p.total*100)+'%"></div></div><div style="display:flex;justify-content:space-between;font-size:8px;color:var(--fog);margin-bottom:8px"><span>'+fmt(p.sold*1000)+' raised · '+p.inv+' investors</span><span>'+Math.round(p.sold/p.total*100)+'%</span></div><div style="display:flex;gap:8px">'+(p.status==="FUNDED"?'<button class="btn btn-ghost" style="flex:1" disabled>Fully Funded</button>':'<button class="btn btn-rlusd" style="flex:1" onclick="openInvest('+p.id+')">Invest RLUSD →</button>')+'<button class="btn btn-ghost btn-sm" onclick="toast(\'Docs downloading\',\'info\',\'📄\')">Docs</button></div></div>';}).join(""));
-}
-function renderRWAPF(){
-  if(!S.rwaPortfolio.length){h("pg-rwa-pf",'<div class="ph"><div><div class="pt">My <em>Portfolio</em></div></div><button class="btn btn-rlusd btn-sm" onclick="nav(\'rwa-market\')">+ Add</button></div><div class="card tac" style="padding:28px"><div style="font-size:40px;margin-bottom:10px">🏢</div><div style="font-family:var(--fd);font-size:17px;margin-bottom:8px">No Positions Yet</div><div style="font-size:11px;color:var(--fog);margin-bottom:12px">Invest in tokenized properties to earn monthly RLUSD</div><button class="btn btn-rlusd btn-lg w100" onclick="nav(\'rwa-market\')">Browse Tokens →</button></div>');return;}
-  var total=S.rwaPortfolio.reduce(function(a,p){return a+p.invested;},0);
-  var monthly=S.rwaPortfolio.reduce(function(a,p){return a+Math.floor(p.invested*5.2/100/12);},0);
-  h("pg-rwa-pf",'<div class="ph"><div><div class="pt">My <em>Portfolio</em></div></div><button class="btn btn-rlusd btn-sm" onclick="nav(\'rwa-market\')">+ Add</button></div><div class="g2 mb8"><div class="card" style="border-top:2px solid var(--rlusd)"><div class="ct">Total Value</div><div class="cv text-rl">$'+total.toLocaleString()+'</div></div><div class="card" style="border-top:2px solid var(--jade)"><div class="ct">Monthly Income</div><div class="cv text-jade">$'+monthly.toLocaleString()+'</div></div></div>'+
-  S.rwaPortfolio.map(function(pos){return '<div style="background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:11px;margin-bottom:7px;display:flex;align-items:center;gap:9px"><div style="width:30px;height:30px;border-radius:3px;background:'+pos.prop.bg+';display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">'+pos.prop.icon+'</div><div style="flex:1"><div style="font-weight:700;font-size:12px">'+pos.prop.name+'</div><div style="font-size:9px;color:var(--fog)">'+pos.qty+' tokens · '+pos.prop.sym+'</div></div><div style="text-align:right"><div style="font-family:var(--fm);font-size:12px;font-weight:700;color:var(--rlusd)">$'+pos.invested.toLocaleString()+'</div><div style="font-size:9px;color:var(--jade)">+$'+Math.floor(pos.invested*5.2/100/12).toLocaleString()+'/mo</div></div></div>';}).join(""));
-}
-function renderRWADist(){
-  var total=S.rwaPortfolio.reduce(function(a,p){return a+Math.floor(p.invested*5.2/100/12);},0);
-  var ytd=S.rwaDists.reduce(function(a,d){return a+d.amount;},0);
-  h("pg-rwa-dist",'<div class="ph"><div><div class="pt">RLUSD <em>Distributions</em></div></div><button class="btn btn-rlusd btn-sm" onclick="triggerDist()">Distribute →</button></div><div class="g2 mb8"><div class="card" style="border-top:2px solid var(--rlusd)"><div class="ct">Due This Month</div><div class="cv text-rl">$'+total.toLocaleString()+'</div></div><div class="card"><div class="ct">YTD Received</div><div class="cv text-jade">$'+ytd.toLocaleString()+'</div></div></div>'+
-  (!S.rwaDists.length?'<div class="card tac" style="padding:24px"><div style="font-size:32px;margin-bottom:8px">💰</div><div style="font-weight:700;margin-bottom:6px">No Distributions Yet</div><div style="font-size:11px;color:var(--fog)">Click Distribute → to trigger monthly RLUSD income</div></div>':
-  S.rwaDists.map(function(d){return '<div style="display:flex;align-items:center;gap:8px;background:var(--dark);border:1px solid rgba(58,171,114,.2);border-radius:3px;padding:8px 10px;margin-bottom:5px"><span style="font-size:16px">'+d.icon+'</span><div style="flex:1;font-size:12px;font-weight:700">'+d.name+'</div><div style="font-family:var(--fm);font-size:12px;font-weight:700;color:var(--jade)">+$'+d.amount.toLocaleString()+'</div><div style="font-family:var(--fm);font-size:8px;color:var(--rlusd)">RLUSD</div></div>';}).join("")));
-}
-async function triggerDist(){
-  if(!S.rwaPortfolio.length){toast("Invest first to earn distributions","error");return;}
-  for(var i=0;i<S.rwaPortfolio.length;i++){var pos=S.rwaPortfolio[i];var amt=Math.floor(pos.invested*5.2/100/12);S.rwaDists.unshift({name:pos.prop.name,icon:pos.prop.icon,amount:amt});addChain("DIST","ev-rl","$"+amt.toLocaleString()+" RLUSD → "+pos.prop.name);await sleep(300);}
-  toast("$"+S.rwaPortfolio.reduce(function(a,p){return a+Math.floor(p.invested*5.2/100/12);},0).toLocaleString()+" RLUSD distributed!","success","💰");
-  renderRWADist();
-}
-
-function renderAnalytics(){
-  var mods=[{ico:"📈",t:"Rent & NOI Forecast",s:"94%",c:"#00b4d8",d:"5-year NOI — bear/base/bull · 500+ variables"},{ico:"🛡",t:"Tenant Risk Scoring",s:"87%",c:"#3aab72",d:"Default/lease-break probability 12–24 months out"},{ico:"🏷",t:"Automated Valuation",s:"±2.1%",c:"#7a62d4",d:"Real-time value + predicted RLUSD token price"},{ico:"🔧",t:"Predictive CapEx",s:"85%",c:"#c9a96e",d:"System failure probability 90 days out"},{ico:"🎯",t:"Deal Matching",s:"3.2×",c:"#d45840",d:"AI-ranked tokenized deals for your risk profile"}];
-  h("pg-analytics",'<div class="ph"><div><div class="pt">Predictive <em>Analytics</em></div><div class="ps">AI · 5 modules · 500+ variables</div></div></div><div style="background:linear-gradient(135deg,#020c14,#041828);border:1px solid rgba(0,180,216,.2);border-radius:5px;padding:14px;margin-bottom:14px"><div style="font-family:var(--fd);font-size:16px;margin-bottom:6px">From <span style="color:var(--gold)">Historical</span> to <span style="color:var(--rlusd);font-style:italic">Predictive</span></div><div style="font-size:12px;color:var(--fog);line-height:1.8">ML models trained on 500+ real-time variables — predict NOI, tenant risk, property value, CapEx, and deal matching 90 days to 5 years out.</div></div>'+
-  mods.map(function(m){return '<div style="background:var(--dark);border:1px solid '+m.c+'25;border-top:3px solid '+m.c+';border-radius:5px;padding:13px;margin-bottom:9px"><div style="display:flex;gap:10px;align-items:center;margin-bottom:8px"><div style="width:38px;height:38px;border-radius:50%;background:'+m.c+'14;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">'+m.ico+'</div><div style="flex:1"><div style="font-size:14px;font-weight:700;margin-bottom:2px">'+m.t+'</div><div style="font-size:11px;color:var(--fog)">'+m.d+'</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:var(--fm);font-size:18px;font-weight:700;color:'+m.c+'">'+m.s+'</div><div style="font-size:7px;color:var(--fog)">Accuracy</div></div></div><button class="btn btn-sm w100" style="background:transparent;border:1px solid '+m.c+';color:'+m.c+';border-radius:3px;font-family:var(--ff);font-weight:700;font-size:8px;letter-spacing:1.5px;cursor:pointer;padding:6px" onclick="toast(\''+m.t+' launching\',\'info\',\''+m.ico+'\')">Launch '+m.t+' →</button></div>';}).join(""));
-}
-
-function renderDealRoom(){
-  h("pg-dealroom",'<div class="ph"><div><div class="pt">Deal <em>Room</em></div><div class="ps">Private collaboration · All parties in one place</div></div></div><div style="background:var(--dark);border:1px solid var(--rim);border-radius:5px;overflow:hidden;margin-bottom:12px"><div style="padding:10px 13px;border-bottom:1px solid var(--rim);background:var(--deep)"><div style="font-weight:700;font-size:13px">One Market Plaza</div><div style="font-size:9px;color:var(--fog)">$47.8M · RLUSD · PSA Pending</div></div><div id="dms" style="padding:12px;min-height:180px;max-height:260px;overflow-y:auto"></div><div style="border-top:1px solid var(--rim);padding:11px 13px;display:flex;gap:8px"><input class="fi" style="flex:1;padding:8px 11px;font-size:13px" id="din" placeholder="Message all deal participants..." onkeydown="if(event.key===\'Enter\')sendDM()"><button class="btn btn-rlusd btn-sm" onclick="sendDM()">Send →</button></div></div><div class="g2"><div style="background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:12px"><div style="font-weight:700;font-size:12px;margin-bottom:6px">📁 Documents</div>'+[["📋","LOI — OMP","Signed"],["📜","PSA Draft","Under Review"],["🔒","RLUSD Escrow","Confirmed"],["📊","Rent Roll","Available"],["🏷","Title Search","Clear"]].map(function(a){return '<div style="display:flex;gap:6px;align-items:center;padding:5px 0;border-bottom:1px solid rgba(26,48,72,.3);cursor:pointer" onclick="toast(\'Opening '+a[1]+'\',\'info\',\'📄\')"><span>'+a[0]+'</span><div style="flex:1;font-size:10px">'+a[1]+'</div><span style="font-size:7px;padding:1px 5px;border-radius:4px;background:'+(a[2]==="Clear"||a[2]==="Confirmed"||a[2]==="Signed"?"rgba(58,171,114,.1)":"rgba(201,169,110,.1)")+';color:'+(a[2]==="Clear"||a[2]==="Confirmed"||a[2]==="Signed"?"var(--jade)":"var(--gold)")+'">'+a[2]+'</span></div>';}).join("")+'</div><div style="background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:12px"><div style="font-weight:700;font-size:12px;margin-bottom:6px">⛓ XRPL Events</div>'+chainHTML(4)+"</div></div>");
-  bDMs();
-}
-function bDMs(){
-  h("dms",S.dealMsgs.map(function(m){
-    if(m.sys)return '<div style="text-align:center;margin-bottom:10px"><div style="display:inline-block;background:rgba(0,180,216,.06);border:1px solid rgba(0,180,216,.2);border-radius:6px;padding:7px 12px;font-family:var(--fm);font-size:10px;color:var(--rlusd)">'+m.text+'</div></div>';
-    return '<div style="margin-bottom:10px;display:flex;flex-direction:column;align-items:'+(m.you?"flex-end":"flex-start")+'">'+(m.you?"":'<div style="font-size:8px;color:var(--fog);font-weight:700;margin-bottom:3px">'+m.from+'</div>')+'<div style="'+(m.you?"background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.2);border-radius:12px 12px 2px 12px":"background:var(--dark);border:1px solid var(--rim);border-radius:12px 12px 12px 2px")+';padding:9px 12px;font-size:11px;line-height:1.6;max-width:80%">'+m.text+'</div></div>';
-  }).join(""));
-  var el=document.getElementById("dms");if(el)el.scrollTop=el.scrollHeight;
-}
-function sendDM(){var inp=document.getElementById("din");if(!inp||!inp.value.trim())return;S.dealMsgs.push({from:"You",you:true,text:inp.value,time:"Just now"});inp.value="";bDMs();toast("Sent","success","💬");}
-
-function renderPDir(){
-  h("pg-pdir",'<div class="ph"><div><div class="pt">Partner <em>Directory</em></div><div class="ps">Certified attorneys, title, banks · Tap any pin</div></div><button class="btn btn-gold btn-sm" onclick="nav(\'p-apply\')">Apply →</button></div><div style="display:flex;gap:7px;margin-bottom:11px;flex-wrap:wrap" id="pdfl">'+["All","Attorney","Title","Bank"].map(function(f){return '<span style="display:inline-block;padding:5px 12px;border-radius:8px;font-size:9px;font-weight:700;cursor:pointer;border:1px solid '+(f==="All"?"var(--rlusd)":"var(--rim)")+';background:'+(f==="All"?"rgba(0,180,216,.08)":"var(--dark)")+';color:'+(f==="All"?"var(--rlusd)":"var(--fog)")+'" onclick="setPDF(\''+f+'\',this)">'+(f==="All"?"All Types":f+"s")+'</span>';}).join("")+'</div><div class="map-wrap" style="height:240px"><svg id="pdsvg" viewBox="0 0 600 260" style="width:100%;height:100%;display:block"><rect width="600" height="260" fill="#0a1628"/><path d="M55,80 L150,58 L250,48 L350,44 L440,48 L515,66 L548,90 L555,120 L545,152 L520,178 L480,196 L420,206 L350,198 L280,198 L200,210 L140,214 L90,202 L60,178 L48,144 L50,110 Z" fill="#0d2030" stroke="#2a4860" stroke-width="1"/></svg><div id="pdtt" style="display:none;position:absolute;bottom:0;left:0;right:0;background:rgba(2,6,9,.97);border-top:1px solid var(--rlusd);padding:10px 13px"></div></div><div class="g2" id="pdl"></div>');
-  rPDPins();rPDList();
-}
-function setPDF(f,el){S.pdirFilt=f;document.querySelectorAll("#pdfl span").forEach(function(s){s.style.borderColor="var(--rim)";s.style.background="var(--dark)";s.style.color="var(--fog)";});el.style.borderColor="var(--rlusd)";el.style.background="rgba(0,180,216,.08)";el.style.color="var(--rlusd)";rPDPins();rPDList();}
-function rPDPins(){
-  var svg=document.getElementById("pdsvg");if(!svg)return;
-  svg.querySelectorAll(".pp").forEach(function(e){e.remove();});
-  var list=S.pdirFilt==="All"?PARTNERS:PARTNERS.filter(function(p){return p.type===S.pdirFilt;});
-  list.forEach(function(p){
-    var x=p.x/100*580+10,y=p.y/100*240+10,col=PTC[p.type]||"#c9a96e";
-    var g=document.createElementNS("http://www.w3.org/2000/svg","g");g.setAttribute("class","pp");g.style.cursor="pointer";
-    g.innerHTML='<circle cx="'+(x+1)+'" cy="'+(y+2)+'" r="7" fill="rgba(0,0,0,0.4)"/><circle cx="'+x+'" cy="'+y+'" r="7" fill="'+col+'"/><circle cx="'+x+'" cy="'+y+'" r="5" fill="'+col+'bb"/><text x="'+x+'" y="'+(y+1.5)+'" text-anchor="middle" dominant-baseline="middle" font-size="4" font-weight="800" fill="rgba(0,0,0,0.8)" font-family="sans-serif">'+p.type.charAt(0)+'</text>';
-    (function(pp){g.onclick=function(){var tt=document.getElementById("pdtt");if(!tt)return;tt.style.display="block";tt.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div style="font-weight:700;font-size:13px">'+pp.name+'</div><div style="font-size:9px;color:var(--fog);margin-bottom:4px">'+pp.city+", "+pp.state+" · "+pp.spec+'</div><div style="display:flex;gap:8px;align-items:center"><span style="font-family:var(--fm);font-size:11px;color:var(--gold);font-weight:700">★ '+pp.rating+'</span><span style="font-size:10px;color:var(--fog)">'+pp.deals+' deals</span>'+(pp.cert?'<span style="background:rgba(58,171,114,.1);color:var(--jade);border:1px solid rgba(58,171,114,.25);border-radius:8px;font-size:7px;font-weight:800;padding:1px 7px">✓ Certified</span>':"")+' </div></div><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="document.getElementById(\'pdtt\').style.display=\'none\'">✕</button><button class="btn btn-rlusd btn-sm" onclick="toast(\'Connecting to '+pp.name+'\',\'success\',\'🤝\')">Connect →</button></div></div>';};})(p);
-    svg.appendChild(g);
-  });
-}
-function rPDList(){
-  var list=S.pdirFilt==="All"?PARTNERS:PARTNERS.filter(function(p){return p.type===S.pdirFilt;});
-  h("pdl",list.map(function(p){return '<div style="background:var(--dark);border:1px solid '+(PTC[p.type]||"var(--rim)")+'22;border-top:3px solid '+(PTC[p.type]||"var(--rim)")+';border-radius:4px;padding:12px"><div style="display:flex;gap:8px;align-items:center;margin-bottom:6px"><div style="width:30px;height:30px;border-radius:50%;background:'+(PTC[p.type]||"var(--rim)")+'18;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">'+(p.type==="Attorney"?"⚖":p.type==="Title"?"🏷":"🏦")+'</div><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:11px">'+p.name+'</div><div style="font-size:9px;color:var(--fog)">'+p.city+", "+p.state+'</div></div>'+(p.cert?'<span style="background:rgba(58,171,114,.1);color:var(--jade);border:1px solid rgba(58,171,114,.25);border-radius:8px;font-size:7px;font-weight:800;padding:1px 6px;flex-shrink:0">✓</span>':"")+'</div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-family:var(--fm);font-size:11px;color:var(--gold);font-weight:700">★ '+p.rating+'</span><span style="font-size:9px;color:var(--fog)">'+p.deals+' deals</span><span style="font-size:8px;padding:2px 7px;border-radius:8px;background:'+(PTC[p.type]||"var(--rim)")+'14;color:'+(PTC[p.type]||"var(--fog)")+';font-weight:700">'+p.type+'</span></div></div>';}).join(""));
-}
-
-function renderNotifs(){
-  var groups=[{l:"Transaction Events",i:[["dloi_submitted","DLOI Submitted","When anyone submits a DLOI on your property"],["dloi_accepted","DLOI Accepted","When your offer is accepted"],["escrow_funded","RLUSD Escrow Funded","When earnest is locked in smart contract"],["psa_executed","PSA Executed","When PSA goes on-chain"],["title_nft","Title NFT Minted","When deed is tokenized on XRPL"],["rwa_distribution","RLUSD Distribution","Monthly RLUSD income to your wallet"]]},{l:"Platform",i:[["tenant_alert","Tenant Risk Alert","When tenant score exceeds threshold"],["deal_room_msg","Deal Room Message","New message in active deal room"]]}];
-  h("pg-notifs",'<div class="ph"><div><div class="pt">Notification <em>Settings</em></div></div><button class="btn btn-jade btn-sm" onclick="toast(\'Preferences saved\',\'success\',\'🔔\')">Save</button></div><div style="background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:13px;margin-bottom:11px"><div style="font-family:var(--fd);font-size:14px;color:var(--gold);margin-bottom:9px">Delivery Channels</div><div class="g2">'+[["email","📧","Email"],["push","📱","Push"],["sms","💬","SMS"],["webhook","🔌","Webhook"]].map(function(a){return '<div style="background:var(--void);border:1px solid '+(S.notifPrefs[a[0]]?"var(--rlusd)":"var(--rim)")+';border-radius:4px;padding:9px;display:flex;gap:8px;align-items:center"><span style="font-size:16px;flex-shrink:0">'+a[1]+'</span><div style="flex:1;font-weight:700;font-size:11px">'+a[2]+'</div><div class="tog" style="background:'+(S.notifPrefs[a[0]]?"var(--jade)":"var(--rim)")+'" onclick="S.notifPrefs[\''+a[0]+'\']=!S.notifPrefs[\''+a[0]+'\'];renderNotifs()"><div class="tok" style="left:'+(S.notifPrefs[a[0]]?20:2)+'px"></div></div></div>';}).join("")+'</div></div>'+
-  groups.map(function(g){return '<div style="background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:13px;margin-bottom:9px"><div style="font-family:var(--fd);font-size:14px;color:var(--gold);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--rim)">'+g.l+'</div>'+g.i.map(function(a){return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(26,48,72,.35)"><div style="flex:1"><div style="font-size:12px;font-weight:600;margin-bottom:1px">'+a[1]+'</div><div style="font-size:10px;color:var(--fog)">'+a[2]+'</div></div><div class="tog" style="background:'+(S.notifPrefs[a[0]]?"var(--jade)":"var(--rim)")+'" onclick="S.notifPrefs[\''+a[0]+'\']=!S.notifPrefs[\''+a[0]+'\'];renderNotifs()"><div class="tok" style="left:'+(S.notifPrefs[a[0]]?20:2)+'px"></div></div></div>';}).join("")+'</div>';}).join(""));
-}
-
-function renderEscrow(){
-  var sc={LOCKED:"var(--rlusd)",PENDING_RELEASE:"var(--gold)",RELEASED:"var(--jade)"};
-  h("pg-escrow",'<div class="ph"><div><div class="pt">Escrow <em>Tracker</em></div><div class="ps">Live RLUSD escrow · Smart contract release</div></div></div><div class="g3 mb8"><div class="card" style="border-top:2px solid var(--rlusd)"><div class="ct">Total Locked</div><div class="cv text-rl">$6.15M</div></div><div class="card"><div class="ct">Active</div><div class="cv text-gold">'+S.escrows.filter(function(e){return e.status!=="RELEASED";}).length+'</div></div><div class="card"><div class="ct">Released</div><div class="cv text-jade">'+S.escrows.filter(function(e){return e.status==="RELEASED";}).length+'</div></div></div>'+
-  S.escrows.map(function(e,i){return '<div style="background:var(--dark);border:1px solid '+(sc[e.status]||"var(--rim)")+'30;border-top:3px solid '+(sc[e.status]||"var(--rim)")+';border-radius:5px;padding:13px;margin-bottom:10px"><div style="display:flex;gap:10px;align-items:center;margin-bottom:10px"><div style="width:34px;height:34px;border-radius:3px;background:rgba(0,180,216,.1);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">🔒</div><div style="flex:1"><div style="font-weight:700;font-size:13px">'+e.prop+'</div><div style="font-size:9px;color:var(--fog)">'+e.buyer+' · '+e.currency+'</div></div><div style="text-align:right"><div style="font-family:var(--fm);font-size:18px;font-weight:700;color:'+(sc[e.status]||"var(--fog)")+'">$'+e.amount.toLocaleString()+'</div><div style="font-size:8px;font-weight:800;color:'+sc[e.status]+';text-transform:uppercase;margin-top:2px">'+e.status.replace(/_/g," ")+'</div></div></div><div style="background:var(--void);border:1px solid var(--rim);border-radius:4px;padding:10px;margin-bottom:10px">'+[["ID",e.id],["Currency",e.currency+" (1:1 USD)"],["Condition",e.condition.replace(/_/g," ")],["Ledger","#"+e.ledger.toLocaleString()],["Hash",e.hash]].map(function(a){return '<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(26,48,72,.35)"><span style="font-size:10px;color:var(--fog)">'+a[0]+'</span><span style="font-family:var(--fm);font-size:9px;color:'+(a[0]==="Currency"||a[0]==="Hash"||a[0]==="ID"?"var(--rlusd)":"var(--text)")+'">'+a[1]+'</span></div>';}).join("")+'</div>'+(e.status!=="RELEASED"?'<div style="display:flex;gap:8px"><button class="btn btn-jade" style="flex:1" onclick="relEsc('+i+')">Release Escrow →</button><button class="btn btn-ghost btn-sm" onclick="toast(\'Viewing XRPL.org\',\'info\',\'🔗\')">XRPL.org ↗</button></div>':'<div style="text-align:center;padding:6px;background:rgba(58,171,114,.06);border:1px solid rgba(58,171,114,.2);border-radius:3px;font-size:11px;color:var(--jade);font-weight:700">✓ Released — Funds Transferred</div>')+'</div>';}).join(""));
-}
-async function relEsc(i){await sleep(1500);S.escrows[i].status="RELEASED";addChain("RELEASE","ev-p","Escrow released — "+S.escrows[i].prop);toast("Escrow released — funds transferred","success","✅");renderEscrow();}
-
-function renderPartners(){
-  h("pg-partners",'<div class="ph"><div><div class="pt">Partner <em>Ecosystem</em></div><div class="ps">DLOI is the rails — everyone runs on top</div></div><button class="btn btn-gold btn-sm" onclick="nav(\'p-apply\')">Apply →</button></div><div style="background:rgba(201,169,110,.04);border:1px solid rgba(201,169,110,.18);border-radius:4px;padding:13px;margin-bottom:12px"><div style="font-family:var(--fd);font-size:15px;color:var(--gold);margin-bottom:6px">DLOI Is the Infrastructure</div><div style="font-size:12px;color:var(--fog);line-height:1.7">We build the rails attorneys, title companies, banks, and brokers run on. Like Visa for CRE. Every partner earns more by joining DLOI. All close deals in 4.2 days.</div></div>'+
-  [{id:"p-att",icon:"⚖",t:"Attorneys",c:"#7a62d4",e:"$500–2K/review",d:"Review AI contracts. Earn per review. Qualified referrals from every DLOI."},{id:"p-title",icon:"🏷",t:"Title Companies",c:"#3ab8c8",e:"$500–2.5K/search",d:"Title search backs every XRPL Title NFT. $1K RWA bonus per tokenization."},{id:"p-banks",icon:"🏦",t:"Banks & Lenders",c:"#c9a96e",e:"Referral fee/loan",d:"Pre-qualified KYC-verified deal flow with full property data."},{id:"p-brokers",icon:"🤝",t:"Brokers",c:"#3aab72",e:"Rev share + commissions",d:"Submit DLOIs for clients. Close in 4.2 days. Auto commission splits."}].map(function(p){return '<div style="background:var(--dark);border:1px solid '+p.c+'20;border-top:3px solid '+p.c+';border-radius:4px;padding:13px;margin-bottom:8px;cursor:pointer" onclick="nav(\''+p.id+'\')"><div style="display:flex;gap:10px;align-items:center;margin-bottom:8px"><div style="width:36px;height:36px;border-radius:50%;background:'+p.c+'14;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">'+p.icon+'</div><div style="flex:1"><div style="font-size:14px;font-weight:700">'+p.t+'</div><div style="font-size:9px;color:'+p.c+';font-weight:700">'+p.e+'</div></div></div><div style="font-size:12px;color:var(--fog);line-height:1.6;margin-bottom:8px">'+p.d+'</div><button class="btn btn-sm w100" style="background:transparent;border:1px solid '+p.c+';color:'+p.c+';border-radius:3px;font-family:var(--ff);font-weight:700;font-size:8px;letter-spacing:1.5px;cursor:pointer;padding:7px">Learn More →</button></div>';}).join(""));
-}
-function renderPPage(type){
-  var data={att:{t:"Attorney Partners",c:"var(--violet)",icon:"⚖",desc:"AI drafts standard contracts. You shift to expert reviewer. Earn $500–2,000 per review. Get qualified referrals from every DLOI in your state.",stats:[["Per Review","$500–2K"],["Monthly","$8–40K"],["Referrals","Included"]]},title:{t:"Title Partners",c:"var(--teal)",icon:"🏷",desc:"Your title search backs every Title NFT minted on XRPL. Faster deals mean more volume. $1,000 RWA bonus per tokenization.",stats:[["Per Search","$500–2.5K"],["Monthly","$15–50K"],["RWA Bonus","+$1K"]]},banks:{t:"Bank Partners",c:"var(--gold)",icon:"🏦",desc:"Every DLOI buyer passed KYC. Pre-qualified leads with full property data and AI-reviewed contracts.",stats:[["Deal Flow","Pre-KYC"],["Monthly","$20–100K"],["Data","Full"]]},brokers:{t:"Broker Partners",c:"var(--jade)",icon:"🤝",desc:"Submit DLOIs for clients. AI drafts in 60 seconds. RLUSD auto-escrow. Commissions paid via smart contract at closing.",stats:[["Close Time","4.2 Days"],["Rev Share","+10%"],["Monthly","$10–50K"]]}};
-  var d=data[type];if(!d)return;
-  h("pg-p-"+type,'<div class="ph"><div><div class="pt"><span style="color:'+d.c+'">'+d.icon+'</span> '+d.t+'</div></div><button class="btn btn-sm" style="background:'+d.c+';color:var(--void);border:none" onclick="toast(\'Applied!\',\'success\',\''+d.icon+'\')">Apply →</button></div><div style="background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:13px;margin-bottom:12px"><div style="font-family:var(--fd);font-size:14px;color:'+d.c+';margin-bottom:5px">'+d.t+'</div><div style="font-size:12px;color:var(--fog);line-height:1.7">'+d.desc+'</div></div><div class="g3 mb12">'+d.stats.map(function(a){return '<div class="card" style="border-top:2px solid '+d.c+'"><div class="ct">'+a[0]+'</div><div class="cv" style="color:'+d.c+'">'+a[1]+'</div></div>';}).join("")+'</div><button class="btn btn-lg w100" style="background:'+d.c+';color:var(--void);border:none" onclick="toast(\'Application submitted!\',\'success\',\''+d.icon+'\')">Apply as Partner →</button>');
-}
-function renderPApply(){
-  h("pg-p-apply",'<div class="ph"><div><div class="pt">Apply to <em>Partner</em></div></div></div><div style="margin-bottom:12px"><div style="font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fog);font-weight:600;margin-bottom:7px">Partner Type</div><div class="g2" style="gap:7px" id="apt">'+[["broker","🤝","Brokerage"],["attorney","⚖","Attorney"],["title","🏷","Title Co."],["bank","🏦","Bank/Lender"]].map(function(a){return '<div onclick="sAT(\''+a[0]+'\',this)" style="background:var(--dark);border:2px solid var(--rim);border-radius:4px;padding:10px;cursor:pointer;display:flex;align-items:center;gap:8px"><span style="font-size:17px">'+a[1]+'</span><div style="font-weight:700;font-size:12px">'+a[2]+'</div></div>';}).join("")+'</div></div><div class="fg"><div class="fgg"><label class="fl">Contact Name</label><input class="fi" placeholder="John Smith" id="ap-n"></div><div class="fgg"><label class="fl">Firm Name</label><input class="fi" placeholder="Smith & Co" id="ap-f"></div><div class="fgg"><label class="fl">Email</label><input class="fi" placeholder="john@firm.com" id="ap-e"></div><div class="fgg"><label class="fl">State</label><input class="fi" placeholder="NY" id="ap-s" maxlength="2"></div></div><button class="btn btn-gold btn-lg w100" onclick="subApply()">Submit Application →</button>');
-}
-function sAT(t,el){document.querySelectorAll("#apt div").forEach(function(d){d.style.background="var(--dark)";d.style.borderColor="var(--rim)";});el.style.background="rgba(0,180,216,.06)";el.style.borderColor="var(--rlusd)";}
-function subApply(){h("pg-p-apply",'<div style="text-align:center;padding:40px 20px"><div style="font-size:48px;margin-bottom:12px">✅</div><div style="font-family:var(--fd);font-size:21px;color:var(--jade);margin-bottom:7px">Application Submitted</div><div style="font-size:12px;color:var(--fog);line-height:1.7">Our team will respond within 48 hours. Founding partners get priority onboarding.</div></div>');toast("Application submitted!","success","✅");}
-
-function renderWallet(){
-  if(!S.walletOn){h("pg-wallet",'<div class="ph"><div><div class="pt">Connect <em>Wallet</em></div></div></div><div class="card tac" style="padding:26px;margin-bottom:10px"><div style="font-size:42px;margin-bottom:10px">⛓</div><div style="font-family:var(--fd);font-size:16px;margin-bottom:6px">XRP Ledger</div><div style="font-size:12px;color:var(--fog);margin-bottom:12px;line-height:1.7">Supports <span style="color:var(--rlusd);font-weight:700">RLUSD</span>, USDC, and USD IOU. XRP for gas only.</div><button class="btn btn-rlusd btn-lg w100" onclick="cWal()">Connect XRPL Wallet</button></div><div class="g2">'+[["Demo Wallet","Testnet"],["Import Seed","Existing"],["New Wallet","Fresh"],["Hardware","Ledger/Trezor"]].map(function(a){return '<div class="card tac" style="cursor:pointer" onclick="cWal()"><div style="font-weight:700;font-size:12px;margin-bottom:2px">'+a[0]+'</div><div style="font-size:9px;color:var(--fog)">'+a[1]+'</div></div>';}).join("")+"</div>");return;}
-  h("pg-wallet",'<div class="ph"><div><div class="pt">Wallet & <em>Assets</em></div></div><button class="btn btn-ghost btn-sm" onclick="dWal()">Disconnect</button></div><div style="background:linear-gradient(135deg,#0c1726,#0e1e3a);border:1px solid var(--rlusd);border-radius:4px;padding:14px;margin-bottom:10px"><div style="font-size:7px;color:var(--fog);margin-bottom:6px;font-family:var(--fm)">'+S.wallet.address+'</div><div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:11px">'+[["RLUSD","var(--rlusd)",S.wallet.RLUSD,"Primary"],["USDC","#2775ca",S.wallet.USDC,"Secondary"],["USD IOU","var(--jade)",S.wallet.USD_IOU,"Bridge"],["XRP","var(--gold)",S.wallet.xrp,"Gas Only"]].map(function(a){return '<div><div style="font-size:7px;color:var(--fog);margin-bottom:1px">'+a[0]+'</div><div style="font-family:var(--fm);font-size:13px;font-weight:700;color:'+a[1]+'">$'+a[2].toLocaleString()+'</div><div style="font-size:7px;color:var(--fog)">'+a[3]+'</div></div>';}).join("")+'</div><div style="display:flex;gap:7px"><button class="btn btn-rlusd btn-sm" onclick="toast(\'Send RLUSD\',\'info\')">Send</button><button class="btn btn-ghost btn-sm" onclick="toast(\'Receive\',\'info\')">Receive</button><button class="btn btn-ghost btn-sm" onclick="toast(\'XRPL DEX swap\',\'info\')">Swap</button></div></div><div class="g3"><div class="card"><div class="ct">XRP Gas</div><div class="cv text-gold" style="font-size:13px">'+S.wallet.xrp+'</div><div class="cs">~$0.000012/tx</div></div><div class="card"><div class="ct">Network</div><div class="cv text-rl" style="font-size:13px">XRPL</div><div class="cs">Mainnet</div></div><div class="card"><div class="ct">Status</div><div class="cv text-jade" style="font-size:13px">Active</div></div></div>');
-}
-async function cWal(){toast("Connecting to XRPL...","info","⛓");await sleep(2000);S.wallet={address:"rN7n34734GMtcTRbmmDrFzxcEBMHqZ8xG1",xrp:142500,RLUSD:2850000,USDC:1200000,USD_IOU:500000};S.walletOn=true;document.getElementById("wal-pill").style.display="flex";addChain("KYC","ev-k","Wallet connected · RLUSD · USDC · USD IOU");toast("XRPL wallet connected","success","🔗");renderWallet();}
-function dWal(){S.walletOn=false;S.wallet=null;document.getElementById("wal-pill").style.display="none";toast("Disconnected","info");renderWallet();}
-
-function renderChain(){h("pg-chain",'<div class="ph"><div><div class="pt">XRP Ledger <em>Activity</em></div></div><div class="pill pill-j"><span class="ldot ldot-j"></span>LIVE</div></div><div class="g3 mb8"><div class="card"><div class="ct">Ledger</div><div class="cv text-rl" style="font-size:12px">#'+S.ledger.toLocaleString()+'</div><div class="cs">3.8s</div></div><div class="card"><div class="ct">RLUSD Vol</div><div class="cv text-rl" style="font-size:12px">$4.2B</div></div><div class="card"><div class="ct">Gas</div><div class="cv text-jade" style="font-size:12px">$0.000012</div></div></div>'+chainHTML(20));}
-
-var AK="dloi_live_"+Math.random().toString(36).substr(2,24);
-function renderEmbed(){
-  h("pg-embed",'<div class="ph"><div><div class="pt">API & <em>Embed</em></div><div class="ps">Drop DLOI into any website, email, CRM, or app</div></div><div class="pill pill-j"><span class="ldot ldot-j"></span>API LIVE</div></div><div style="background:linear-gradient(135deg,#020c14,#041828);border:1px solid rgba(201,169,110,.2);border-radius:5px;padding:14px;margin-bottom:13px"><div style="font-family:var(--fd);font-size:15px;color:var(--gold);margin-bottom:6px">The Viral Growth Engine</div><div style="font-size:12px;color:var(--fog);line-height:1.8">Every broker who embeds a DLOI button brings their entire client network onto DLOI. This is how Calendly went to $3B. This is how DocuSign embedded into every law firm in America.</div></div><div style="background:var(--dark);border:1px solid rgba(0,180,216,.25);border-radius:4px;padding:13px;margin-bottom:12px"><div style="font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--rlusd);font-weight:700;margin-bottom:7px">Your API Key</div><div style="font-family:var(--fm);font-size:10px;color:var(--jade);background:var(--void);border:1px solid var(--rim);border-radius:3px;padding:9px 11px;word-break:break-all;margin-bottom:7px">'+AK+'</div><button class="btn btn-rlusd btn-sm" onclick="navigator.clipboard&&navigator.clipboard.writeText(\''+AK+'\');toast(\'Copied\',\'success\',\'📋\')">Copy Key</button></div><div class="tabs" id="etabs"><div class="tab on" onclick="showSnip(\'website\',this)">🌐 Website</div><div class="tab" onclick="showSnip(\'email\',this)">📧 Email</div><div class="tab" onclick="showSnip(\'crm\',this)">💼 CRM</div><div class="tab" onclick="showSnip(\'api\',this)">🔌 REST API</div></div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px"><div style="font-family:var(--fd);font-size:14px;color:var(--gold)">Your Code</div><button class="btn btn-ghost btn-sm" onclick="cpSnip()">Copy Code</button></div><div class="code-block" id="snip"></div><div class="g3 mt8"><div class="card"><div class="ct">API Calls</div><div class="cv text-rl">8,234</div><div class="cs">This month</div></div><div class="card"><div class="ct">DLOIs via Embed</div><div class="cv text-gold">142</div></div><div class="card"><div class="ct">RLUSD Volume</div><div class="cv text-jade">$18.4M</div></div></div>');
-  window._snips={
-    website:'&lt;!-- Add to any webpage --&gt;\n&lt;script src="https://cdn.dloi.io/embed/v1.js" async&gt;&lt;/script&gt;\n&lt;div class="dloi-widget"\n  data-api-key="'+AK+'"\n  data-property-id="OMP001"\n  data-currency="RLUSD"&gt;\n&lt;/div&gt;',
-    email:'&lt;!-- Email Signature Button --&gt;\n&lt;a href="https://dloi.io/submit?prop=OMP001"\n   style="display:inline-block;padding:10px 20px;\n   background:#00b4d8;color:#020609;font-weight:700;\n   font-family:Arial;font-size:13px;border-radius:4px;\n   text-decoration:none;"&gt;\n  ◈ Submit DLOI — RLUSD Settlement\n&lt;/a&gt;',
-    crm:'// CRM Integration (Zapier / HubSpot)\n// Trigger: "New Deal Created"\n// Action:  "Submit DLOI"\n// Auto-maps property_id, offer, buyer from CRM\n// Returns XRPL tx hash → saved to deal record\n\n// Webhook payload example:\n{\n  "event": "dloi.accepted",\n  "xrpl_hash": "0x4f8a2b...",\n  "rlusd_escrowed": 1455000,\n  "status": "PSA_PENDING"\n}',
-    api:"// REST API — Any Language\nfetch('https://api.dloi.io/v1/submit', {\n  method: 'POST',\n  headers: {\n    'Authorization': 'Bearer "+AK+"',\n    'Content-Type': 'application/json'\n  },\n  body: JSON.stringify({\n    property_id: 'OMP001',\n    offer_amount: 48500000,\n    earnest_pct: 3,\n    currency: 'RLUSD',\n    due_diligence_days: 30\n  })\n})\n// Returns: { dloi_id, xrpl_tx_hash, rlusd_escrowed }"
-  };
-  document.getElementById("snip").innerHTML=window._snips.website;
-}
-function showSnip(id,el){document.querySelectorAll("#etabs .tab").forEach(function(t){t.classList.remove("on");});el.classList.add("on");var s=document.getElementById("snip");if(s&&window._snips)s.innerHTML=window._snips[id]||"";}
-function cpSnip(){var s=document.getElementById("snip");if(s){navigator.clipboard&&navigator.clipboard.writeText(s.innerText);}toast("Code copied","success","📋");}
-
-function renderBulk(){
-  h("pg-bulk",'<div class="ph"><div><div class="pt">Bulk <em>Import</em></div><div class="ps">CSV upload · Up to 500 listings at once</div></div><button class="btn btn-ghost btn-sm" onclick="dlCSV()">⬇ Template</button></div><div style="background:linear-gradient(135deg,#020c14,#041828);border:1px solid rgba(201,169,110,.2);border-radius:5px;padding:14px;margin-bottom:13px"><div style="font-family:var(--fd);font-size:15px;color:var(--gold);margin-bottom:6px">Upload 500 Listings in 60 Seconds</div><div style="font-size:12px;color:var(--fog);line-height:1.8">Upload a CSV and every property goes live on the DLOI map and marketplace immediately. Buyers can submit DLOIs within minutes.</div></div><div style="border:2px dashed var(--rim);border-radius:5px;padding:36px;text-align:center;cursor:pointer;margin-bottom:11px" onclick="document.getElementById(\'bfile\').click()" onmouseenter="this.style.borderColor=\'var(--rlusd)\'" onmouseleave="this.style.borderColor=\'var(--rim)\'"><div style="font-size:44px;margin-bottom:10px">📂</div><div style="font-family:var(--fd);font-size:16px;margin-bottom:5px">Drop your CSV here</div><div style="font-size:11px;color:var(--fog);margin-bottom:13px">or tap to browse · Max 500 rows</div><button class="btn btn-rlusd">Choose File</button><input type="file" id="bfile" accept=".csv" style="display:none" onchange="hBulk(this)"></div><div style="background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:13px"><div style="font-family:var(--fd);font-size:14px;color:var(--gold);margin-bottom:8px">Required CSV Columns</div><div class="g2" style="gap:5px">'+["name","address","city","state","type","price","cap_rate","noi","occupancy","sf","year_built","currency"].map(function(c){return '<div style="font-family:var(--fm);font-size:9px;color:var(--jade);padding:3px 0;border-bottom:1px solid rgba(26,48,72,.3)">'+c+'</div>';}).join("")+'</div><button class="btn btn-ghost btn-sm w100 mt8" onclick="dlCSV()">⬇ Download Template CSV</button></div>');
-}
-async function hBulk(input){
-  var file=input.files[0];if(!file)return;
-  var reader=new FileReader();
-  reader.onload=async function(e){
-    var lines=e.target.result.trim().split("\n");
-    var headers=lines[0].split(",").map(function(h){return h.trim().toLowerCase().replace(/ /g,"_");});
-    var rows=lines.slice(1).map(function(line){var vals=line.split(",").map(function(v){return v.trim();});var obj={};headers.forEach(function(h,i){obj[h]=vals[i]||"";});return obj;}).filter(function(r){return r.name;});
-    h("pg-bulk",'<div style="text-align:center;padding:40px 20px"><div style="font-size:48px;margin-bottom:13px">⚡</div><div style="font-family:var(--fd);font-size:19px;margin-bottom:9px">Importing '+rows.length+' Properties</div><div style="height:8px;background:var(--rim);border-radius:4px;overflow:hidden;margin-bottom:7px"><div id="bbar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--rlusd),var(--jade));border-radius:4px;transition:width .3s"></div></div><div id="bpct" style="font-family:var(--fm);font-size:22px;font-weight:700;color:var(--rlusd)">0%</div></div>');
-    var icons={"Office":"🏢","Industrial":"🏭","Retail":"🏪","Mixed-Use":"🏗️","Medical":"🏥","Multifamily":"🏘️","Self-Storage":"🗄️","Hospitality":"🏨","R&D / Lab":"🔬","Land":"🏞️"};
-    for(var i=0;i<rows.length;i++){await sleep(300);var pct=Math.round(((i+1)/rows.length)*100);var bar=document.getElementById("bbar");var pctEl=document.getElementById("bpct");if(bar)bar.style.width=pct+"%";if(pctEl)pctEl.textContent=pct+"%";var p=rows[i];S.userListings.push({name:p.name,addr:p.address+", "+p.city+", "+p.state,type:p.type||"Office",icon:icons[p.type]||"🏢",bg:"#0d2040",status:"ACTIVE",score:75+rand(15),id:Date.now()+i,sym:(p.name||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,3)+(100+rand(900)),tok:false,price:parseFloat(p.price)||0,cap:parseFloat(p.cap_rate)||0,noi:parseFloat(p.noi)||0,occ:parseFloat(p.occupancy)||0,sf:parseFloat(p.sf)||0,yr:parseInt(p.year_built)||0,trend:false,inv:0,sold:0,total:0,yld:"N/A",lat:25+rand(20),lng:-120+rand(50)});}
-    addChain("BULK","ev-p",rows.length+" properties bulk imported");
-    toast(rows.length+" properties imported and live!","success","🏢");
-    h("pg-bulk",'<div style="text-align:center;padding:30px 20px"><div style="font-size:52px;margin-bottom:11px">✅</div><div style="font-family:var(--fd);font-size:21px;color:var(--jade);margin-bottom:7px">'+rows.length+' Properties Live</div><div style="font-size:12px;color:var(--fog);line-height:1.7;margin-bottom:18px">All properties are live on the DLOI map and marketplace.</div><div style="display:flex;gap:8px;justify-content:center"><button class="btn btn-rlusd" onclick="renderBulk()">Import More</button><button class="btn btn-gold" onclick="nav(\'market\')">View Marketplace →</button></div></div>');
-  };reader.readAsText(file);
-}
-function dlCSV(){var csv="name,address,city,state,type,price,cap_rate,noi,occupancy,sf,year_built,currency\nOne Market Plaza,101 Spear St,San Francisco,CA,Office,48500000,5.2,2522000,94,1024000,2002,RLUSD\nHarbor View,900 Biscayne Blvd,Miami,FL,Mixed-Use,67200000,4.9,3292800,91,820000,2019,RLUSD";var blob=new Blob([csv],{type:"text/csv"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="dloi_bulk_template.csv";a.click();toast("Template downloaded","success","📄");}
-
-function renderXRPL(){
-  h("pg-xrpl",'<div class="ph"><div><div class="pt">XRPL Transaction <em>Explorer</em></div><div class="ps">Live ledger feed per property</div></div><div class="pill pill-j"><span class="ldot ldot-j"></span>#'+S.ledger.toLocaleString()+'</div></div><input class="fi mb8" placeholder="🔍 Search property..." id="xq" oninput="bXL()" style="font-size:13px;padding:9px 12px"><div style="display:flex;gap:11px;height:380px"><div style="width:175px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;overflow-y:auto" id="xpl"></div><div style="flex:1;display:flex;flex-direction:column;overflow:hidden" id="xpf"><div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--fog)"><div style="font-size:40px">⛓</div><div style="font-family:var(--fd);font-size:15px">Select a property to view its <em style="color:var(--gold)">XRPL feed</em></div></div></div></div>');
-  bXL();
-}
-function bXL(){var q=(document.getElementById("xq")&&document.getElementById("xq").value||"").toLowerCase();var list=PROPS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.sym.toLowerCase().indexOf(q)>-1;});h("xpl",list.map(function(p){return '<div id="xp-'+p.id+'" onclick="sXP('+p.id+')" style="background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:9px 10px;cursor:pointer"><div style="display:flex;gap:7px;align-items:center"><div style="width:24px;height:24px;border-radius:3px;background:'+p.bg+';display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0">'+p.icon+'</div><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+p.name+'</div><div style="font-family:var(--fm);font-size:7px;color:var(--rlusd)">'+p.sym+'</div></div></div></div>';}).join(""));}
-function sXP(id){
-  var p=PROPS.find(function(x){return x.id===id;});if(!p)return;
-  document.querySelectorAll("[id^=xp-]").forEach(function(el){el.style.background="var(--dark)";el.style.borderColor="var(--rim)";});
-  var sel=document.getElementById("xp-"+id);if(sel){sel.style.background="rgba(0,180,216,.06)";sel.style.borderColor="var(--rlusd)";}
-  if(!S.explorerTxns[id]){var types=[["DLOI","#c9a96e","Digital LOI Submitted"],["ESCROW","#00b4d8","RLUSD Escrowed"],["PSA","#3aab72","PSA Executed"],["DIST","#00b4d8","RLUSD Distribution"],["NFT","#7a62d4","Title NFT Minted"]];S.explorerTxns[id]=Array.from({length:8},function(_,i){var t=types[rand(types.length)];var amts=[455000,1200000,2500000,8500,125000];return{hash:rndH(),type:t[0],color:t[1],desc:t[2],ledger:80241992-i*47-rand(30),amount:amts[rand(amts.length)],time:i===0?"Just now":i<3?(i*4)+"m ago":Math.floor(i*.8)+"h ago"};});}
-  var txns=S.explorerTxns[id];
-  h("xpf",'<div style="background:var(--deep);border:1px solid var(--rim);border-radius:4px 4px 0 0;padding:8px 12px;display:flex;align-items:center;gap:8px;margin-bottom:1px"><div style="width:28px;height:28px;border-radius:3px;background:'+p.bg+';display:flex;align-items:center;justify-content:center;font-size:13px">'+p.icon+'</div><div style="flex:1"><div style="font-weight:700;font-size:12px">'+p.name+'</div><div style="font-size:9px;color:var(--fog)">'+p.sym+'</div></div><a href="https://livenet.xrpl.org" target="_blank" style="font-size:8px;color:var(--rlusd);font-weight:700;text-decoration:none;padding:3px 8px;border:1px solid rgba(0,180,216,.3);border-radius:3px">XRPL.org ↗</a></div><div style="flex:1;overflow-y:auto;background:var(--void);border:1px solid var(--rim);border-top:none;border-radius:0 0 4px 4px">'+
-  txns.map(function(tx){return '<div style="display:flex;align-items:center;gap:8px;padding:8px 11px;border-bottom:1px solid rgba(26,48,72,.3);cursor:pointer" onclick="toast(\'TX: '+tx.hash+'\',\'info\',\'⛓\')"><span style="font-family:var(--fm);font-size:7px;padding:2px 6px;border-radius:2px;background:'+tx.color+'18;color:'+tx.color+';font-weight:700;flex-shrink:0;min-width:52px;text-align:center">'+tx.type+'</span><div style="flex:1;min-width:0"><div style="font-size:10px;font-weight:600;margin-bottom:1px">'+tx.desc+'</div><div style="font-family:var(--fm);font-size:8px;color:var(--fog);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+tx.hash+'</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:var(--fm);font-size:10px;font-weight:700;color:var(--jade)">$'+tx.amount.toLocaleString()+'</div><div style="font-size:8px;color:var(--haze)">'+tx.time+'</div></div><span style="font-size:8px;color:var(--jade);font-weight:700">✓</span></div>';}).join("")+'</div>');
-}
-
-function renderWL(){
-  h("pg-wl",'<div class="ph"><div><div class="pt">White <em>Label</em></div><div class="ps">Brand DLOI as your own platform</div></div></div><div style="background:linear-gradient(135deg,#020c14,#041828);border:1px solid rgba(201,169,110,.2);border-radius:5px;padding:14px;margin-bottom:14px"><div style="font-family:var(--fd);font-size:15px;color:var(--gold);margin-bottom:7px">Your Brokerage. Your Brand. DLOI Infrastructure.</div><div style="font-size:12px;color:var(--fog);line-height:1.8">Large brokerages run DLOI as their own branded platform. Your logo, your colors, your domain. All transactions still settle in RLUSD on XRPL.</div></div><div class="g3 mb12">'+[{n:"Starter",p:"$499/mo",f:["Custom colors","Your logo","5 agent seats"],best:false},{n:"Growth",p:"$1,999/mo",f:["Custom subdomain","25 agent seats","API access"],best:true},{n:"Enterprise",p:"Custom",f:["Full custom domain","Unlimited agents","Dedicated manager"],best:false}].map(function(p){return '<div style="background:var(--dark);border:2px solid '+(p.best?"rgba(201,169,110,.3)":"var(--rim)")+';border-radius:5px;padding:12px;cursor:pointer;position:relative" onclick="toast(\''+p.n+' plan selected\',\'info\',\'🏷\')">'+(p.best?'<div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--void);font-size:7px;font-weight:800;padding:2px 8px;border-radius:8px;white-space:nowrap">POPULAR</div>':'')+'<div style="font-weight:700;font-size:13px;margin-bottom:2px">'+p.n+'</div><div style="font-family:var(--fm);font-size:15px;font-weight:700;color:var(--gold);margin-bottom:9px">'+p.p+'</div>'+p.f.map(function(f){return '<div style="font-size:10px;color:var(--fog);margin-bottom:3px;display:flex;gap:5px"><span style="color:var(--jade);flex-shrink:0">✓</span>'+f+'</div>';}).join("")+'</div>';}).join("")+'</div><div style="background:var(--dark);border:1px solid var(--rim);border-radius:4px;padding:13px;margin-bottom:13px"><div class="fg"><div class="fgg full"><label class="fl">Firm Name</label><input class="fi" id="wf" placeholder="Kassin Sabbagh Realty" oninput="uWP()"></div><div class="fgg"><label class="fl">Brand Color</label><div style="display:flex;gap:8px;align-items:center"><input type="color" id="wc" value="#00b4d8" oninput="uWP()" style="width:40px;height:36px;border:1px solid var(--rim);border-radius:3px;background:transparent;cursor:pointer"><span id="wcv" style="font-family:var(--fm);font-size:11px;color:var(--fog)">#00b4d8</span></div></div><div class="fgg"><label class="fl">Subdomain</label><div style="display:flex;align-items:center"><input class="fi" id="wd" placeholder="yourfirm" style="border-radius:3px 0 0 3px" oninput="uWP()"><div style="padding:10px 9px;background:var(--rim);font-size:11px;color:var(--fog);white-space:nowrap">.dloi.io</div></div></div></div><div style="background:var(--void);border:1px solid var(--rim);border-radius:4px;padding:14px;text-align:center;margin-top:3px;margin-bottom:11px"><div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-bottom:11px;font-weight:700">Live Preview</div><button id="wlbtn" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:linear-gradient(135deg,#00b4d8,#0090b8);border:none;border-radius:4px;font-family:\'Barlow\',sans-serif;font-size:13px;font-weight:700;color:#020609;cursor:pointer"><div style="width:18px;height:18px;background:rgba(255,255,255,.15);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px">◈</div><span id="wlbt">Your Firm — Submit Offer</span></button></div></div><button class="btn btn-gold btn-lg w100" onclick="subWL()">Submit White-Label Request →</button>');
-}
-function uWP(){var f=document.getElementById("wf")&&document.getElementById("wf").value;var c=document.getElementById("wc")&&document.getElementById("wc").value||"#00b4d8";var cv=document.getElementById("wcv");var btn=document.getElementById("wlbtn");var btxt=document.getElementById("wlbt");if(cv)cv.textContent=c;if(btn)btn.style.background="linear-gradient(135deg,"+c+","+c+"cc)";if(btxt)btxt.textContent=f?f+" — Submit Offer":"Your Firm — Submit Offer";}
-function subWL(){h("pg-wl",'<div style="text-align:center;padding:60px 20px"><div style="font-size:52px;margin-bottom:12px">✅</div><div style="font-family:var(--fd);font-size:22px;color:var(--jade);margin-bottom:8px">Request Submitted</div><div style="font-size:12px;color:var(--fog);line-height:1.7">Our team will configure your white-label setup within 48 hours.</div></div>');toast("White-label request submitted!","success","🏷");}
-
-function renderAbout(){
-  h("pg-about",'<div class="ph"><div><div class="pt">Founder <em>Vision</em></div><div class="ps">10 years CRE · 10 years blockchain · Built to disrupt</div></div></div><div style="background:linear-gradient(135deg,#020c14,#041828);border:1px solid rgba(201,169,110,.25);border-radius:5px;padding:16px;margin-bottom:12px"><div style="display:flex;gap:13px;align-items:flex-start;margin-bottom:11px"><div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#0d2040,#1a3060);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:20px;font-weight:700;color:var(--gold);flex-shrink:0">V</div><div style="flex:1"><div style="font-family:var(--fd);font-size:19px;color:var(--gold);margin-bottom:2px">Volkan Halilov</div><div style="font-size:11px;color:var(--fog);margin-bottom:8px">Founder & CEO — DLOI Platform</div><div style="display:flex;gap:5px;flex-wrap:wrap">'+[["10 Yrs CRE","var(--gold)"],["Blockchain 2015","var(--rlusd)"],["$500M+ CRE","var(--jade)"],["XRPL Builder","var(--violet)"]].map(function(a){return '<span style="background:'+a[1]+'18;border:1px solid '+a[1]+'25;border-radius:8px;font-size:8px;font-weight:700;padding:2px 9px;color:'+a[1]+'">'+a[0]+'</span>';}).join("")+'</div></div></div><div style="font-size:12px;color:var(--fog);line-height:1.8">DLOI exists because of a rare combination: a founder who spent 10 years closing CRE deals and 10 years studying blockchain — who recognized that RLUSD, XRPL\'s NFT standard, and XRPL\'s native DEX had finally matured enough to build the infrastructure the CRE industry needed.</div></div><div style="background:var(--dark);border:1px solid rgba(0,180,216,.2);border-radius:4px;padding:13px;margin-bottom:11px"><div style="font-family:var(--fd);font-size:14px;color:var(--rlusd);margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid rgba(0,180,216,.15)">⛓ Blockchain Timeline — Since 2015</div>'+[["2015","Studied the Bitcoin/Satoshi whitepaper. Published LinkedIn articles on Bitcoin\'s potential impact on CRE infrastructure."],["2015–2018","Continued publishing articles on Bitcoin and distributed ledger tech applied to CRE — smart contract escrow, immutable title records. Years ahead of mainstream adoption."],["2018–2021","Tracked Ethereum smart contracts, ERC-20/ERC-721, and early RWA tokenization. Documented why Ethereum gas costs made it impractical for institutional real estate."],["2021–2023","Identified XRPL as the superior settlement layer. Studied RLUSD, XRPL NFT standards, native DEX, and Ripple\'s institutional strategy."],["2023–2024","Began DLOI architecture — combining 10 years of CRE experience with 10 years of blockchain study."],["2025","Built working DLOI prototype — RLUSD/USDC settlement, AI contracts, RWA, predictive analytics, and partner ecosystem across all 12 CRE asset classes."]].map(function(a){return '<div style="display:flex;gap:11px;padding:7px 0;border-bottom:1px solid rgba(26,48,72,.35)"><span style="font-family:var(--fm);font-size:10px;font-weight:700;color:var(--rlusd);flex-shrink:0;min-width:54px">'+a[0]+'</span><span style="font-size:11px;color:var(--fog);line-height:1.6">'+a[1]+'</span></div>';}).join("")+'</div><div style="background:rgba(0,180,216,.04);border:1px solid rgba(0,180,216,.2);border-radius:4px;padding:13px"><div style="font-family:var(--fd);font-size:14px;color:var(--rlusd);margin-bottom:7px">XRPL Grant Application — $150,000</div><div style="font-size:12px;color:var(--fog);line-height:1.7;margin-bottom:10px">Applying for the XRPL RWA Grant to deploy real smart contracts on XRPL Mainnet. Every transaction settles in RLUSD. Every deed transfers as an XRPL NFT.</div>'+[["Category","Real World Assets (RWA)"],["Request","$150,000 USD — Non-Dilutive"],["Primary Currency","RLUSD — Ripple Labs — 1:1 USD"],["Target","$10M+ RLUSD/month by Month 6"]].map(function(a){return '<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(26,48,72,.35);font-size:11px"><span style="color:var(--fog)">'+a[0]+'</span><span style="font-family:var(--fm);font-size:10px;color:var(--rlusd);font-weight:700">'+a[1]+'</span></div>';}).join("")+'</div>');
-}
-
-function openKyc(){h("MC",'<div class="overlay" onclick="cm()"><div class="modal" onclick="event.stopPropagation()"><div class="mh"></div><div class="mx" onclick="cm()">✕</div><div class="mt">KYC / <em>Verify</em></div><div class="ms">Required for RLUSD and USDC on XRPL</div><div class="fg"><div class="fgg"><label class="fl">First Name</label><input class="fi" placeholder="John" id="kfn"></div><div class="fgg"><label class="fl">Last Name</label><input class="fi" placeholder="Smith" id="kln"></div><div class="fgg"><label class="fl">Date of Birth</label><input type="date" class="fi"></div><div class="fgg"><label class="fl">Accreditation</label><select class="fi"><option>Accredited Investor</option><option>Qualified Purchaser</option><option>Institutional</option></select></div></div><button class="btn btn-rlusd btn-lg w100" onclick="rKyc()">Verify Identity →</button></div></div>');}
-async function rKyc(){var mc=document.getElementById("MC");mc.querySelector(".modal").innerHTML='<div style="text-align:center;padding:30px 20px"><div style="font-size:34px;margin-bottom:10px">🔍</div><div style="font-weight:700;margin-bottom:10px;font-size:16px">Verifying...</div><div class="lbar"><div class="lbar-in"></div></div></div>';await sleep(2500);S.kycDone=true;document.getElementById("kyc-pill").style.display="flex";document.getElementById("kyc-btn").style.display="none";addChain("KYC","ev-k","KYC verified — Accredited Investor · RLUSD enabled");cm();toast("KYC verified — RLUSD enabled","success","🛡");}
-
-var _lp=null,_ls=1,_lc="RLUSD",_lt={};
-function openLOI(id){_lp=PROPS.find(function(x){return x.id===id;})||S.userListings.find(function(x){return x.id===id;});if(!_lp)return;_ls=1;_lc="RLUSD";_lt={};rLOI();}
-function rLOI(){
-  var steps=["Property","Currency","Terms"];
-  var sh=steps.map(function(l,i){return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;position:relative">'+(i<steps.length-1?'<div style="position:absolute;top:11px;left:calc(50% + 11px);right:calc(-50% + 11px);height:1px;background:'+(i<_ls-1?"var(--jade)":"var(--rim)")+'"></div>':"")+'<div style="width:22px;height:22px;border-radius:50%;border:2px solid '+(i<_ls-1?"var(--jade)":i===_ls-1?"var(--rlusd)":"var(--rim)")+';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;background:'+(i<_ls-1?"var(--jade)":i===_ls-1?"transparent":"var(--dark)")+';color:'+(i<_ls-1?"var(--void)":i===_ls-1?"var(--rlusd)":"var(--fog)")+';z-index:1">'+(i<_ls-1?"✓":i+1)+'</div><div style="font-size:7px;text-transform:uppercase;color:'+(i===_ls-1?"var(--rlusd)":i<_ls-1?"var(--jade)":"var(--fog)")+';margin-top:3px">'+l+'</div></div>';}).join("");
-  var body="";
-  if(_ls===1)body=[["Property",_lp.name],["Address",_lp.addr],["Type",_lp.type],["Price",fmt(_lp.price)],["Cap Rate",_lp.cap>0?_lp.cap+"%":"N/A"],["NOI",_lp.noi>0?fmt(_lp.noi):"N/A"]].map(function(a){return '<div class="irow"><div class="ik">'+a[0]+'</div><div class="iv">'+a[1]+'</div></div>';}).join("");
-  else if(_ls===2)body='<div style="font-size:11px;color:var(--fog);margin-bottom:10px;line-height:1.6">All options are 1:1 USD pegged. Always stable. Never volatile.</div>'+Object.entries(CURRS).map(function(e){var id=e[0],c=e[1];return '<div onclick="_lc=\''+id+'\';rLOI()" style="background:'+(_lc===id?c.c+"10":"var(--void)")+';border:2px solid '+(_lc===id?c.c:"var(--edge)")+';border-radius:4px;padding:11px;cursor:pointer;margin-bottom:7px;display:flex;align-items:center;gap:9px"><div style="font-family:var(--fm);font-size:17px;color:'+c.c+';font-weight:700;flex-shrink:0">'+c.icon+'</div><div style="flex:1"><div style="font-weight:700;font-size:12px;color:'+c.c+'">'+id+(id==="USD_IOU"?" — Tokenized USD Wire":id==="USDC"?" — USD Coin by Circle":" — Ripple USD Stablecoin")+'</div><div style="font-size:9px;color:var(--fog);margin-top:2px">✓ '+c.peg+' · Issued by '+c.issuer+'</div></div>'+(c.best?'<span style="background:var(--jade);color:var(--void);font-size:7px;font-weight:800;padding:2px 6px;border-radius:8px;flex-shrink:0">★ BEST</span>':"")+'</div>';}).join("");
-  else{var c=CURRS[_lc];body='<div style="background:'+c.c+'10;border:1px solid '+c.c+'25;border-radius:4px;padding:8px 11px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="font-family:var(--fm);font-size:11px;font-weight:700;color:'+c.c+'">'+c.icon+' '+_lc+'</span><span style="font-size:9px;color:var(--fog)">Settlement · 1:1 USD · Always stable</span></div><div class="fg"><div class="fgg"><label class="fl">Offer Price</label><input class="fi" id="lo" placeholder="'+fmt(_lp.price)+'" value="'+(_lt.offer||"")+'"></div><div class="fgg"><label class="fl">Earnest %</label><input class="fi" type="number" id="le" value="'+(_lt.earnest||3)+'"></div><div class="fgg"><label class="fl">Due Diligence</label><select class="fi" id="ld"><option value="15">15 Days</option><option value="30" selected>30 Days</option><option value="45">45 Days</option></select></div><div class="fgg"><label class="fl">Entity</label><select class="fi" id="lent"><option>LLC</option><option>Individual</option><option>Corporation</option><option>Trust</option></select></div><div class="fgg full"><label class="fl">Special Terms</label><textarea class="fi" rows="2" id="ln" placeholder="Special conditions...">'+(_lt.notes||"")+'</textarea></div></div>';}
-  var bc=CURRS[_lc]&&CURRS[_lc].c||"var(--gold)";
-  h("MC",'<div class="overlay"><div class="modal" onclick="event.stopPropagation()"><div class="mh"></div><div class="mx" onclick="cm()">✕</div><div class="mt">Submit <em>DLOI</em></div><div class="ms">'+_lp.name+' · '+fmt(_lp.price)+' · '+_lc+'</div><div style="display:flex;margin-bottom:14px">'+sh+'</div>'+body+'<div style="display:flex;gap:8px;margin-top:10px">'+(_ls>1?'<button class="btn btn-ghost" onclick="_ls--;rLOI()">← Back</button>':"")+'<button class="btn" style="flex:1;background:'+(_ls===3?bc:"var(--gold)")+';color:var(--void);border:none;border-radius:3px;font-family:var(--ff);font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;padding:11px;display:flex;align-items:center;justify-content:center;gap:7px" onclick="lNext()">'+(_ls===3?"🤖 Generate Contract →":_ls===2?"Use "+_lc+" →":"Set Terms →")+'</button></div></div></div>');
-}
-async function lNext(){
-  if(_ls<3){_ls++;rLOI();return;}
-  if(!S.kycDone){cm();openKyc();toast("Complete KYC first","error","🛡");return;}
-  _lt={offer:document.getElementById("lo")&&document.getElementById("lo").value||fmt(_lp.price),earnest:document.getElementById("le")&&document.getElementById("le").value||"3",dd:document.getElementById("ld")&&document.getElementById("ld").value||"30",currency:_lc,notes:document.getElementById("ln")&&document.getElementById("ln").value||""};
-  var mc=document.getElementById("MC");
-  mc.querySelector(".modal").innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:32px;margin-bottom:10px">🤖</div><div style="font-weight:700;margin-bottom:8px">AI Drafting LOI...</div><div class="lbar"><div class="lbar-in"></div></div></div>';
-  await sleep(2500);
-  var hash=rndH(),ledger=80241992+rand(9000);
-  var earnAmt=Math.floor(_lp.price*(parseFloat(_lt.earnest||3)/100));
-  S.myLOIs.push({id:hash,property:_lp,terms:_lt,tx:{hash:hash,ledger:ledger}});
-  S.escrows.push({id:"ESC-"+rndId(),prop:_lp.name,amount:earnAmt,currency:_lc,status:"LOCKED",condition:"PSA_EXECUTION",hash:rndH(),ledger:ledger,buyer:"You"});
-  addChain("DLOI","ev-d","DLOI deployed — "+_lp.name+" "+fmt(_lp.price)+" · "+_lc);
-  addChain(_lc,"ev-rl","$"+earnAmt.toLocaleString()+" "+_lc+" escrowed — "+_lp.name);
-  mc.querySelector(".modal").innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:38px;margin-bottom:9px">⛓</div><div style="font-family:var(--fd);font-size:18px;color:var(--jade);margin-bottom:5px">Deployed On-Chain</div>'+[["TX Hash",hash],["Ledger","#"+ledger.toLocaleString()],["Currency",_lc+" — 1:1 USD"],["Escrow","$"+earnAmt.toLocaleString()+" "+_lc+" locked"]].map(function(a){return '<div class="irow"><div class="ik">'+a[0]+'</div><div class="iv text-rl">'+a[1]+'</div></div>';}).join("")+'<button class="btn btn-jade btn-lg w100 mt8" onclick="cm();nav(\'my-lois\')">View Pipeline →</button></div>';
-  toast("DLOI deployed! Ledger #"+ledger,"success","✅");
-}
-
-function openDetail(id){
-  var p=PROPS.find(function(x){return x.id===id;})||S.userListings.find(function(x){return x.id===id;});if(!p)return;
-  var sc=p.status==="ACTIVE"?"sc-a":p.status==="FUNDED"?"sc-f":"sc-c";
-  var scoreCol=p.score>=90?"var(--jade)":p.score>=75?"var(--gold)":"var(--ember)";
-  h("MC",'<div class="overlay"><div class="modal" onclick="event.stopPropagation()"><div class="mh"></div><div class="mx" onclick="cm()">✕</div><div style="display:flex;gap:11px;align-items:flex-start;margin-bottom:11px"><div style="width:48px;height:48px;border-radius:4px;background:'+p.bg+';display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">'+p.icon+'</div><div style="flex:1"><div style="font-family:var(--fd);font-size:17px;line-height:1.1;margin-bottom:3px">'+p.name+'</div><div style="font-size:9px;color:var(--fog);margin-bottom:5px">'+p.addr+'</div><div style="display:flex;gap:5px;flex-wrap:wrap"><span class="tag tg">'+p.type+'</span><span class="'+sc+'">'+p.status+'</span>'+(p.tok?'<span class="tag trl">RWA</span>':"")+(p.trend?'<span class="tag tj">🔥</span>':"")+'</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:var(--fm);font-size:17px;font-weight:700;color:var(--gold)">'+fmt(p.price)+'</div><div style="width:40px;height:40px;border-radius:50%;background:'+scoreCol+'18;border:2px solid '+scoreCol+';display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:13px;font-weight:700;color:'+scoreCol+';margin-top:5px;margin-left:auto">'+p.score+'</div></div></div><div class="g2 mb12">'+[["Price",fmt(p.price),"var(--gold)"],["Cap Rate",p.cap>0?p.cap+"%":"N/A","var(--jade)"],["NOI",p.noi>0?fmt(p.noi):"N/A","var(--jade)"],["Occupancy",p.occ>0?p.occ+"%":"N/A","var(--jade)"],["Size",(p.sf/1000).toFixed(0)+"K SF","var(--text)"],["Year Built",p.yr||"N/A","var(--text)"]].map(function(a){return '<div style="background:var(--void);border:1px solid var(--rim);border-radius:3px;padding:8px"><div style="font-size:8px;color:var(--fog);margin-bottom:2px">'+a[0]+'</div><div style="font-family:var(--fm);font-size:13px;font-weight:700;color:'+a[2]+'">'+a[1]+'</div></div>';}).join("")+'</div>'+(p.tok&&p.total>0?'<div style="background:rgba(0,180,216,.05);border:1px solid rgba(0,180,216,.2);border-radius:4px;padding:11px;margin-bottom:11px"><div class="prog mb5"><div class="prog-f" style="width:'+Math.round(p.sold/p.total*100)+'%"></div></div><div style="display:flex;justify-content:space-between;font-size:8px;color:var(--fog)">'+fmt(p.sold*1000)+' raised · '+p.inv+' investors<span>'+Math.round(p.sold/p.total*100)+'%</span></div></div>':"")+'<div style="display:flex;gap:8px">'+(p.status!=="CLOSED"?'<button class="btn btn-rlusd" style="flex:1" onclick="cm();openLOI('+p.id+')">Submit DLOI →</button>':"")+(p.tok&&p.status!=="FUNDED"?'<button class="btn btn-jade btn-sm" onclick="cm();openInvest('+p.id+')">Invest →</button>':"")+'<button class="btn btn-ghost btn-sm" onclick="toast(\'Deal room opened\',\'info\',\'💬\')">Deal Room</button></div></div></div>');
-}
-
-function openInvest(id){
-  var p=PROPS.find(function(x){return x.id===id;});if(!p)return;
-  h("MC",'<div class="overlay"><div class="modal" onclick="event.stopPropagation()"><div class="mh"></div><div class="mx" onclick="cm()">✕</div><div class="mt">Invest in <em>'+p.sym+'</em></div><div class="ms">'+p.name+' · RLUSD distributions monthly</div>'+[["Token Price","$1,000 RLUSD"],["Annual Yield",p.yld],["Cap Rate",p.cap+"%"],["Legal","Reg D 506(b)"],["Settlement","RLUSD (1:1 USD)"]].map(function(a){return '<div class="irow"><div class="ik">'+a[0]+'</div><div class="iv">'+a[1]+'</div></div>';}).join("")+'<div style="margin:11px 0"><label class="fl">Number of Tokens</label><input class="fi" type="number" id="iq" value="10" min="1" style="margin-top:4px" oninput="uIS('+parseFloat(p.yld)+')"></div><div id="issum" style="background:linear-gradient(135deg,#061420,#0a1e30);border:2px solid var(--rlusd);border-radius:5px;padding:12px;margin-bottom:11px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:9px"><div><div style="font-family:var(--fm);font-size:18px;font-weight:700;color:var(--rlusd)">$10,000</div><div style="font-size:7px;color:var(--fog);margin-top:2px">RLUSD · 10 tokens</div></div><div><div style="font-family:var(--fm);font-size:15px;font-weight:700;color:var(--jade)">+$'+Math.floor(10000*parseFloat(p.yld)/100/12).toLocaleString()+'/mo</div><div style="font-size:7px;color:var(--fog);margin-top:2px">RLUSD income</div></div></div></div><button class="btn btn-rlusd btn-lg w100" onclick="dInvest('+id+')">Invest →</button></div></div>');
-}
-function uIS(yld){var qty=parseInt(document.getElementById("iq")&&document.getElementById("iq").value||10);var total=qty*1000;var monthly=Math.floor(total*yld/100/12);var el=document.getElementById("issum");if(el)el.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px"><div><div style="font-family:var(--fm);font-size:18px;font-weight:700;color:var(--rlusd)">$'+total.toLocaleString()+'</div><div style="font-size:7px;color:var(--fog);margin-top:2px">RLUSD · '+qty+' tokens</div></div><div><div style="font-family:var(--fm);font-size:15px;font-weight:700;color:var(--jade)">+$'+monthly.toLocaleString()+'/mo</div><div style="font-size:7px;color:var(--fog);margin-top:2px">RLUSD income</div></div></div>';}
-async function dInvest(id){var p=PROPS.find(function(x){return x.id===id;});if(!p)return;var qty=parseInt(document.getElementById("iq")&&document.getElementById("iq").value||10);var total=qty*1000;var mc=document.getElementById("MC");mc.querySelector(".modal").innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:32px;margin-bottom:10px">🪙</div><div style="font-weight:700;margin-bottom:8px">Processing...</div><div class="lbar"><div class="lbar-in"></div></div></div>';await sleep(1800);S.rwaPortfolio.push({prop:p,qty:qty,invested:total,currency:"RLUSD"});addChain("BUY","ev-rl",qty+" "+p.sym+" tokens — $"+total.toLocaleString()+" RLUSD");cm();toast(qty+" "+p.sym+" tokens acquired!","success","🏢");if(S.page==="rwa-pf")renderRWAPF();}
-
-var _ms=1,_mf={name:"",address:"",city:"",state:"",type:"Office",price:"",cap:"",noi:"",occ:"",sf:"",yr:"",currency:"RLUSD",tokenize:false,role:"seller"};
-function openListModal(){_ms=1;_mf={name:"",address:"",city:"",state:"",type:"Office",price:"",cap:"",noi:"",occ:"",sf:"",yr:"",currency:"RLUSD",tokenize:false,role:"seller"};rLM();}
-function rLM(){
-  var steps=["Role","Property","Details","Review"];
-  var sh=steps.map(function(l,i){return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;position:relative">'+(i<steps.length-1?'<div style="position:absolute;top:11px;left:calc(50% + 11px);right:calc(-50% + 11px);height:1px;background:'+(i<_ms-1?"var(--jade)":"var(--rim)")+'"></div>':"")+'<div style="width:22px;height:22px;border-radius:50%;border:2px solid '+(i<_ms-1?"var(--jade)":i===_ms-1?"var(--rlusd)":"var(--rim)")+';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;background:'+(i<_ms-1?"var(--jade)":i===_ms-1?"transparent":"var(--dark)")+';color:'+(i<_ms-1?"var(--void)":i===_ms-1?"var(--rlusd)":"var(--fog)")+';z-index:1">'+(i<_ms-1?"✓":i+1)+'</div><div style="font-size:7px;text-transform:uppercase;color:'+(i===_ms-1?"var(--rlusd)":i<_ms-1?"var(--jade)":"var(--fog)")+';margin-top:3px">'+l+'</div></div>';}).join("");
-  var body="";
-  if(_ms===1)body='<div style="font-size:11px;color:var(--fog);margin-bottom:11px">Any user can list — seller, broker, investor, attorney, bank, or title company.</div><div class="g2" style="gap:7px;margin-bottom:13px">'+[["seller","🏷","Seller"],["broker","🤝","Broker"],["investor","📈","Investor"],["bank","🏦","Bank/Lender"]].map(function(a){return '<div onclick="_mf.role=\''+a[0]+'\';rLM()" style="background:'+(_mf.role===a[0]?"rgba(0,180,216,.06)":"var(--dark)")+';border:2px solid '+(_mf.role===a[0]?"var(--rlusd)":"var(--rim)")+';border-radius:4px;padding:10px;cursor:pointer;display:flex;align-items:center;gap:8px"><span style="font-size:17px">'+a[1]+'</span><div style="font-weight:700;font-size:12px">'+a[2]+'</div></div>';}).join("")+'</div>';
-  else if(_ms===2)body='<div class="fg"><div class="fgg full"><label class="fl">Property Name *</label><input class="fi" id="ln1" placeholder="One Market Plaza" value="'+_mf.name+'"></div><div class="fgg full"><label class="fl">Street Address</label><input class="fi" id="la1" placeholder="123 Main Street" value="'+_mf.address+'"></div><div class="fgg"><label class="fl">City *</label><input class="fi" id="lc1" placeholder="New York" value="'+_mf.city+'"></div><div class="fgg"><label class="fl">State *</label><input class="fi" id="ls1" placeholder="NY" maxlength="2" value="'+_mf.state+'"></div><div class="fgg full"><label class="fl">Asset Type</label><select class="fi" id="lt1">'+["Office","Industrial","Retail","Mixed-Use","Medical","Multifamily","Self-Storage","Hospitality","R&D / Lab","Land"].map(function(t){return '<option'+(t===_mf.type?" selected":"")+">"+t+"</option>";}).join("")+'</select></div></div>';
-  else if(_ms===3)body='<div class="fg"><div class="fgg"><label class="fl">Asking Price ($)</label><input class="fi" type="number" id="lp1" placeholder="48500000" value="'+_mf.price+'"></div><div class="fgg"><label class="fl">Cap Rate (%)</label><input class="fi" type="number" id="lcp1" placeholder="5.2" value="'+_mf.cap+'"></div><div class="fgg"><label class="fl">Annual NOI ($)</label><input class="fi" type="number" id="lno1" placeholder="2522000" value="'+_mf.noi+'"></div><div class="fgg"><label class="fl">Occupancy (%)</label><input class="fi" type="number" id="loc1" placeholder="94" value="'+_mf.occ+'"></div><div class="fgg"><label class="fl">Square Footage</label><input class="fi" type="number" id="lsf1" placeholder="1024000" value="'+_mf.sf+'"></div><div class="fgg"><label class="fl">Year Built</label><input class="fi" type="number" id="lyr1" placeholder="2002" value="'+_mf.yr+'"></div><div class="fgg full"><label class="fl">Settlement Currency</label><div style="display:flex;gap:7px;margin-top:4px">'+[["RLUSD","#00b4d8","◈"],["USDC","#2775ca","◉"],["USD_IOU","#3aab72","◇"]].map(function(a){return '<div onclick="_mf.currency=\''+a[0]+'\';rLM()" style="flex:1;background:'+(_mf.currency===a[0]?a[1]+"10":"var(--void)")+';border:2px solid '+(_mf.currency===a[0]?a[1]:"var(--edge)")+';border-radius:4px;padding:8px 6px;cursor:pointer;text-align:center"><div style="font-family:var(--fm);font-size:13px;color:'+a[1]+';font-weight:700">'+a[2]+'</div><div style="font-size:8px;color:'+a[1]+';font-weight:700;margin-top:2px">'+a[0].replace("_"," ")+'</div></div>';}).join("")+'</div></div><div class="fgg full"><div style="background:rgba(0,180,216,.04);border:1px solid rgba(0,180,216,.18);border-radius:4px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="_mf.tokenize=!_mf.tokenize;rLM()"><div style="width:20px;height:20px;border-radius:3px;border:2px solid '+(_mf.tokenize?"var(--rlusd)":"var(--rim)")+';background:'+(_mf.tokenize?"var(--rlusd)":"transparent")+';display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:var(--void)">'+(_mf.tokenize?"✓":"")+'</div><div><div style="font-size:12px;font-weight:700;color:var(--rlusd)">🌐 Enable RWA Tokenization</div><div style="font-size:10px;color:var(--fog);margin-top:2px">Fractional ownership · Reg D 506(b)</div></div></div></div></div>';
-  else body='<div style="background:var(--void);border:1px solid var(--rim);border-radius:4px;padding:12px;margin-bottom:11px"><div style="font-weight:700;font-size:14px;margin-bottom:3px">'+(_mf.name||"Your Property")+'</div><div style="font-size:10px;color:var(--fog);margin-bottom:8px">'+_mf.city+(_mf.state?", "+_mf.state:"")+'</div>'+[["Type",_mf.type],["Price",_mf.price?"$"+(parseFloat(_mf.price)/1e6).toFixed(1)+"M":"TBD"],["Currency",_mf.currency.replace("_"," ")],["RWA",_mf.tokenize?"Yes — Reg D":"No"],["Goes Live","Immediately"]].map(function(a){return '<div class="irow"><div class="ik">'+a[0]+'</div><div class="iv" style="color:'+(a[0]==="Goes Live"?"var(--jade)":a[0]==="Currency"?"var(--rlusd)":"inherit")+'">'+a[1]+'</div></div>';}).join("")+'</div><div style="background:rgba(58,171,114,.05);border:1px solid rgba(58,171,114,.2);border-radius:4px;padding:9px 12px;margin-bottom:11px;font-size:11px;color:var(--fog);line-height:1.6">✓ Your listing will appear on the DLOI map and marketplace immediately.</div>';
-  h("MC",'<div class="overlay"><div class="modal" onclick="event.stopPropagation()"><div class="mh"></div><div class="mx" onclick="cm()">✕</div><div class="mt">List a <em>Property</em></div><div class="ms">Goes live instantly · Any user type welcome</div><div style="display:flex;margin-bottom:14px">'+sh+'</div>'+body+'<div style="display:flex;gap:8px;margin-top:10px">'+(_ms>1?'<button class="btn btn-ghost" onclick="_ms--;rLM()">← Back</button>':"")+'<button class="btn '+(_ms===4?"btn-gold":"btn-rlusd")+'" style="flex:1;padding:10px 20px;font-size:10px" onclick="lMN()">'+(_ms===4?"🏢 Go Live Now →":_ms===3?"Review →":_ms===2?"Set Financials →":"Continue →")+'</button></div></div></div>');
-}
-async function lMN(){
-  if(_ms===2){_mf.name=(document.getElementById("ln1")&&document.getElementById("ln1").value)||"";_mf.address=(document.getElementById("la1")&&document.getElementById("la1").value)||"";_mf.city=(document.getElementById("lc1")&&document.getElementById("lc1").value)||"";_mf.state=(document.getElementById("ls1")&&document.getElementById("ls1").value)||"";_mf.type=(document.getElementById("lt1")&&document.getElementById("lt1").value)||"Office";if(!_mf.name||!_mf.city||!_mf.state){toast("Fill in name, city, and state","error");return;}}
-  if(_ms===3){_mf.price=(document.getElementById("lp1")&&document.getElementById("lp1").value)||"";_mf.cap=(document.getElementById("lcp1")&&document.getElementById("lcp1").value)||"";_mf.noi=(document.getElementById("lno1")&&document.getElementById("lno1").value)||"";_mf.occ=(document.getElementById("loc1")&&document.getElementById("loc1").value)||"";_mf.sf=(document.getElementById("lsf1")&&document.getElementById("lsf1").value)||"";_mf.yr=(document.getElementById("lyr1")&&document.getElementById("lyr1").value)||"";}
-  if(_ms<4){_ms++;rLM();return;}
-  var icons={"Office":"🏢","Industrial":"🏭","Retail":"🏪","Mixed-Use":"🏗️","Medical":"🏥","Multifamily":"🏘️","Self-Storage":"🗄️","Hospitality":"🏨","R&D / Lab":"🔬","Land":"🏞️"};
-  S.userListings.push({name:_mf.name,addr:_mf.address+", "+_mf.city+", "+_mf.state,type:_mf.type,icon:icons[_mf.type]||"🏢",bg:"#0d2040",status:"ACTIVE",score:75+rand(15),id:Date.now(),sym:(_mf.name||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,3)+(100+rand(900)),tok:_mf.tokenize,price:parseFloat(_mf.price)||0,cap:parseFloat(_mf.cap)||0,noi:parseFloat(_mf.noi)||0,occ:parseFloat(_mf.occ)||0,sf:parseFloat(_mf.sf)||0,yr:parseInt(_mf.yr)||0,trend:false,inv:0,sold:0,total:0,yld:(_mf.cap||"N/A")+"%",lat:25+rand(20),lng:-120+rand(50)});
-  addChain("DLOI","ev-d","New listing — "+_mf.name);cm();toast(_mf.name+" is now LIVE!","success","🏢");
-}
-
-function toggleAI(){S.aiOpen=!S.aiOpen;var panel=document.getElementById("ai-panel");if(panel)panel.classList.toggle("open",S.aiOpen);}
-function sendAI(){var inp=document.getElementById("ai-inp");if(!inp||!inp.value.trim())return;var q=inp.value.trim();inp.value="";askAI(q);}
-async function askAI(question){
-  var msgs=document.getElementById("ai-msgs");if(!msgs)return;
-  if(!S.aiOpen)toggleAI();
-  msgs.innerHTML+='<div class="ai-msg-u">'+question+'</div>';
-  msgs.innerHTML+='<div class="ai-msg-a" id="ai-thinking"><span class="spin"></span> Analyzing...</div>';
-  msgs.scrollTop=msgs.scrollHeight;
-  try{
-    var res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:500,system:"You are the DLOI AI Assistant — expert in commercial real estate, XRPL blockchain, RLUSD stablecoin, RWA tokenization, and the DLOI platform. DLOI is the world's first blockchain-native CRE transaction platform built on XRPL. Answer concisely in plain text under 120 words.",messages:[{role:"user",content:question}]})});
-    var data=await res.json();
-    var answer=(data.content&&data.content[0]&&data.content[0].text)||"I couldn't get a response. Please try again.";
-    var thinking=document.getElementById("ai-thinking");if(thinking)thinking.remove();
-    msgs.innerHTML+='<div class="ai-msg-a">'+answer+'</div>';
-  }catch(e){
-    var thinking=document.getElementById("ai-thinking");if(thinking)thinking.remove();
-    msgs.innerHTML+='<div class="ai-msg-a">Connection error. Please try again.</div>';
+function handleWaitlist() {
+  const email = document.getElementById('email-input').value;
+  const msg = document.getElementById('waitlist-msg');
+  if (!email || !email.includes('@')) {
+    msg.style.color = '#C9A96E';
+    msg.textContent = 'Please enter a valid email address.';
+    return;
   }
-  msgs.scrollTop=msgs.scrollHeight;
+  msg.style.color = '#3AAB72';
+  msg.textContent = '✓ You are on the list. We will be in touch.';
+  document.getElementById('email-input').value = '';
+  // Send to mailto as fallback
+  window.location.href = 'mailto:volkan@dloi.io?subject=DLOI Waitlist&body=Please add me to the DLOI waitlist: ' + email;
 }
 
-
-function renderGuide(){
-  var out='<div class="ph"><div><div class="pt">Platform <em>Guide</em></div><div class="ps">Every user type, every feature, full value breakdown</div></div></div>';
-
-  var users=[
-    {ico:"🏢",c:"var(--rlusd)",label:"Buyer",tagline:"Find, analyze & acquire CRE — all on-chain",
-     value:"Submit binding DLOIs in 60 seconds. Earnest money auto-escrowed in RLUSD the moment you submit. AI drafts your PSA. Close in 4.2 days instead of 47.",
-     steps:["Browse 12+ asset classes on the Map or Marketplace","Tap any property and submit a DLOI","Choose RLUSD, USDC, or USD IOU settlement","AI generates your Letter of Intent in 60 seconds","RLUSD earnest locked in XRPL smart contract instantly","PSA executed and Title NFT transferred at closing"],
-     features:[["Map View","Find properties by asset class, location, price"],["DLOI Submission","3-step on-chain offer with RLUSD escrow"],["My DLOIs","Track all active offers and your pipeline"],["Deal Room","Collaborate with all parties in one place"],["KYC / Verify","One-time verification to unlock RLUSD settlement"],["Wallet","Connect XRPL wallet and view RLUSD, USDC, XRP"]]},
-    {ico:"🏷",c:"var(--gold)",label:"Seller",tagline:"List your property and receive blockchain-verified offers",
-     value:"Receive binding DLOIs with earnest already escrowed in RLUSD — not paper promises. See every offer on-chain. Close faster with AI-drafted PSAs.",
-     steps:["Click + List to add your property in 4 steps","Set asking price, cap rate, NOI, and asset type","Choose RLUSD as settlement currency","Go live on the DLOI map and marketplace instantly","Receive DLOIs with RLUSD earnest already locked on-chain","Accept, AI drafts PSA, then close on-chain"],
-     features:[["List Property","List any CRE asset in 4 steps — goes live instantly"],["Marketplace","Your listing visible to all DLOI buyers nationwide"],["Escrow Tracker","See earnest money locked in XRPL smart contract"],["Deal Room","Negotiate with buyers, attorneys, title in one place"],["Notifications","Alerts for every DLOI, escrow, and PSA event"],["RWA Tokenization","Optionally tokenize for fractional investor access"]]},
-    {ico:"📈",c:"var(--jade)",label:"Investor",tagline:"Earn monthly RLUSD from institutional CRE — from $1,000",
-     value:"Invest in tokenized commercial properties under Reg D 506(b). Each token is $1,000 RLUSD. Monthly distributions paid directly to your XRPL wallet. No middlemen.",
-     steps:["Go to RWA then Token Marketplace","Browse tokenized properties with live financials","Choose your investment amount — minimum 1 token at $1,000 RLUSD","Connect XRPL wallet and complete KYC","Tokens minted on XRPL and distributions paid monthly in RLUSD","Track your portfolio, yield, and distributions in real time"],
-     features:[["RWA Overview","Learn how DLOI tokenization works — Reg D and XRPL"],["Token Marketplace","Browse all tokenized properties with cap rates and yield"],["My Portfolio","Track your positions and monthly RLUSD income"],["Distributions","Receive monthly RLUSD income direct to XRPL wallet"],["XRPL Explorer","Verify every token and distribution on-chain"],["Analytics","AI-powered deal matching for your risk profile"]]},
-    {ico:"🤝",c:"var(--teal)",label:"Broker",tagline:"Close deals in 4.2 days. Commissions paid by smart contract.",
-     value:"Submit DLOIs for your clients. AI drafts in 60 seconds. RLUSD auto-escrow. Commission splits executed automatically at closing via smart contract.",
-     steps:["List client properties with + List or Bulk Import CSV","Submit DLOIs on behalf of buyer clients","AI drafts LOI and a certified attorney partner reviews","RLUSD earnest locked on-chain automatically","PSA executed and commission split in smart contract","Embed DLOI button in your email signature and website"],
-     features:[["Bulk Import","Upload 500 listings at once via CSV — all go live instantly"],["API and Embed","2-line embed for email, website, CRM — brings clients to DLOI"],["My DLOIs","Full pipeline view of all client offers"],["Deal Room","All parties in one room — buyers, sellers, attorneys, title"],["Partner Directory","Refer to certified DLOI attorneys and title companies"],["White Label","Run DLOI as your own branded platform"]]},
-    {ico:"⚖",c:"var(--violet)",label:"Partners",tagline:"Attorneys · Title Companies · Banks — all earn more on DLOI",
-     value:"DLOI is the rails. You run on top. Every DLOI in your market routes to your firm. AI handles drafts — you handle expert review. Earn more, work less.",
-     steps:["Go to Partners then Apply","Select your firm type — Attorney, Title, Bank, or Broker","Submit your application — founding partners get priority","Get certified and appear on the DLOI Partner Map","Receive qualified referrals from every DLOI in your area","Earn per review, per title search, per loan closed"],
-     features:[["Partner Ecosystem","See how each partner type earns on DLOI"],["Attorneys","500 to 2K per PSA review with qualified referrals built in"],["Title Companies","500 to 2.5K per search and 1K bonus per RWA tokenization"],["Banks and Lenders","Pre-KYC verified deal flow with full property data"],["Partner Directory","All certified DLOI partners on the US map"],["Apply","Submit your firm application — go live in 48 hours"]]},
-  ];
-
-  users.forEach(function(u){
-    out+='<div style="background:var(--dark);border:1px solid '+u.c+'30;border-top:3px solid '+u.c+';border-radius:5px;padding:14px;margin-bottom:14px">';
-    out+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">';
-    out+='<div style="width:42px;height:42px;border-radius:50%;background:'+u.c+'14;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">'+u.ico+'</div>';
-    out+='<div style="flex:1"><div style="font-family:var(--fd);font-size:17px;color:'+u.c+'">'+u.label+'</div><div style="font-size:10px;color:var(--fog)">'+u.tagline+'</div></div>';
-    out+='</div>';
-    out+='<div style="background:var(--void);border:1px solid var(--rim);border-radius:4px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--haze);line-height:1.7">'+u.value+'</div>';
-    out+='<div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:'+u.c+';font-weight:700;margin-bottom:6px">How It Works</div>';
-    u.steps.forEach(function(step,i){
-      out+='<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:5px"><div style="width:18px;height:18px;border-radius:50%;background:'+u.c+'20;border:1px solid '+u.c+'40;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:'+u.c+';flex-shrink:0;margin-top:1px">'+(i+1)+'</div><div style="font-size:10px;color:var(--fog);line-height:1.5">'+step+'</div></div>';
-    });
-    out+='<div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:'+u.c+';font-weight:700;margin-bottom:6px;margin-top:8px">Key Features</div>';
-    out+='<div class="g2" style="gap:6px">';
-    u.features.forEach(function(f){
-      out+='<div style="background:var(--void);border:1px solid var(--rim);border-radius:3px;padding:7px 9px"><div style="font-size:10px;font-weight:700;color:'+u.c+';margin-bottom:2px">'+f[0]+'</div><div style="font-size:9px;color:var(--fog);line-height:1.4">'+f[1]+'</div></div>';
-    });
-    out+='</div></div>';
-  });
-
-  out+='<div style="background:linear-gradient(135deg,#020c14,#041828);border:1px solid rgba(0,180,216,.2);border-radius:5px;padding:14px"><div style="font-family:var(--fd);font-size:16px;color:var(--gold);margin-bottom:7px">Ready to Start?</div><div style="font-size:11px;color:var(--fog);line-height:1.7;margin-bottom:11px">DLOI is live now. Connect your wallet, complete KYC, and submit your first Digital Letter of Intent on XRPL in under 5 minutes.</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-rlusd" onclick="nav("market")">Browse Listings</button><button class="btn btn-gold" onclick="nav("rwa")">Explore RWA</button><button class="btn btn-ghost" onclick="openKyc()">Complete KYC</button><button class="btn btn-ghost" onclick="openListModal()">List a Property</button></div></div>';
-
-  h("pg-guide",out);
-}
-
-
-setInterval(function(){S.ledger++;var lv=document.getElementById("lv");if(lv)lv.textContent="#"+S.ledger.toLocaleString();},3800);
-renderDashboard();
+document.getElementById('email-input').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') handleWaitlist();
+});
 </script>
+
 </body>
 </html>
